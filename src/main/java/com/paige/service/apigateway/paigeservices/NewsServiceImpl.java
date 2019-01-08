@@ -30,7 +30,7 @@ public class NewsServiceImpl extends BaseService {
         return requestMono.flatMap(url -> webClient
                 .get()
                 .uri(url.path().replace("/api", ""))
-                .accept(MediaType.APPLICATION_JSON)
+                //.accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class)));
     }
