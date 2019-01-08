@@ -1,0 +1,7 @@
+
+#Api service endpoint
+ContentsServiceImpl:
+  uri: "/content/card/{card}"
+  endPoint: "http://localhost:9000/api/v2.0/home/feeds"
+  method: "get"
+
