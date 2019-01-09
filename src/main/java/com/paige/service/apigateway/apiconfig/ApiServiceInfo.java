@@ -2,19 +2,19 @@ package com.paige.service.apigateway.apiconfig;
 
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.List;
-
-// Api configuration 설정
+/**
+ * API 서비스 엔드포인트 정보
+ * @author      snjeong
+ */
 
 @Data
-public class ApiServiceInfo implements Serializable {
+public class ApiServiceInfo {
 
     private String baseurl;
-    List<CommonProperty> get;
-    List<CommonProperty> post;
-    List<CommonProperty> put;
-    List<CommonProperty> del;
+    private String get;
+    private String post;
+    private String put;
+    private String del;
 
 }
 

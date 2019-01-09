@@ -16,18 +16,16 @@ public class PaigeEdgeApplication implements CommandLineRunner {
 
     public static void main(String[] args){
 
-        //TODO : 설정정보로 빼기
-        System.setProperty("SERVER.PORT","8082");
         SpringApplication.run(PaigeEdgeApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-        ApiServiceInfo getinfo = apiServiceConfig.getHome();
+/*        ApiServiceInfo getinfo = apiServiceConfig.getHome();
         ApiServiceInfo newsinfo = apiServiceConfig.getNews();
         log.info("service url" + getinfo.getBaseurl());
-        log.info("service url" + newsinfo.getBaseurl());
+        log.info("service url" + newsinfo.getBaseurl());*/
     }
 
 }

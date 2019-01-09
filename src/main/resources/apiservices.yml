@@ -1,34 +1,19 @@
 apiservice:
   home:
     baseurl: http://ipaddr:port/resource
-    get:
-      -
-        id: 1
-        uri: /feed/**
-    post:
-      -
-        id: 2
-        uri: /feed/**
+    get: /feed/**
+    post: /feed/**
 
+  # baseurl(API 서버주소): http://ipaddr:port
+  # method(get,post,put,del): /{service name}/** (URI 경로)
   news:
-    # test --> baseurl: http://localhost:9000
     baseurl: http://172.20.92.214:31005
-    # baseurl: http://localhost:31005
-    get:
-      -
-        id: 1
-        uri: /news/**
+    get: /news/**
 
   match:
     baseurl: http://localhost:9000/match
-    get:
-      -
-        id: 1
-        uri: /match/**
+    get: /match/**
 
   rank:
     baseurl: http://localhost:9000/rank
-    get:
-      -
-        id: 1
-        uri: /rank/**
+    get: /rank/**

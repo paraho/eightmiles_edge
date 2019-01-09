@@ -2,10 +2,7 @@ package com.paige.service.apigateway.routers;
 
 import com.paige.service.apigateway.Filter.HandlerFilter;
 import com.paige.service.apigateway.application.ApiServiceConfig;
-import com.paige.service.apigateway.handlers.ApiHandler;
-import com.paige.service.apigateway.handlers.ErrorHandler;
-import com.paige.service.apigateway.handlers.HomeHandler;
-import com.paige.service.apigateway.handlers.NewsHandler;
+import com.paige.service.apigateway.handlers.*;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -27,6 +24,7 @@ public class ApiRouter {
         this.errorHandler = errorHandler;
     }
 
+    @Deprecated
     public static RouterFunction<?> doRoute(ApiHandler handler) {
         return
                 nest(path(API_PATH),
@@ -37,42 +35,60 @@ public class ApiRouter {
                 );
     }
 
-    public static RouterFunction<?> bindToHomeHandler(HomeHandler homeHandler) {
+    private static RouterFunction<?> bindToHomeHandler(ApiServiceConfig apiServiceConfig, HomeHandler homeHandler) {
 
         return RouterFunctions
-                .route(GET(API_PATH + apiServiceConfig.getHome().getGet().get(0).getUri()).and(accept(APPLICATION_JSON)), homeHandler::getContent)
+                .route(GET(API_PATH + apiServiceConfig.getHome().getGet()).and(accept(APPLICATION_JSON))
+                        , homeHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), homeHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), homeHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), homeHandler::getContent);
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), homeHandler::getContent)
+                .filter(new HandlerFilter());
     }
 
-    public static RouterFunction<?> bindToNewsHandler(NewsHandler newsHandler) {
+    private static RouterFunction<?> bindToNewsHandler(ApiServiceConfig apiServiceConfig, NewsHandler newsHandler) {
 
         return RouterFunctions
-                .route(GET("/api/news/**"), newsHandler::getContent)
+                .route(GET(API_PATH + apiServiceConfig.getNews().getGet()).and(accept(APPLICATION_JSON))
+                        , newsHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), newsHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), newsHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), newsHandler::getContent);
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), newsHandler::getContent)
+                .filter(new HandlerFilter());
     }
 
-    /*
-    public static RouterFunction<?> bindToMatchHandler(MatchHandler matchHandler) {
+    private static RouterFunction<?> bindToMatchHandler(ApiServiceConfig apiServiceConfig, MatchHandler matchHandler) {
 
         return RouterFunctions
-                .route(GET(API_PATH + apiServiceConfig.getMatch().getGet().get(0).getUri()).and(accept(APPLICATION_JSON)), matchHandler::getContent)
+                .route(GET(API_PATH + apiServiceConfig.getMatch().getGet()).and(accept(APPLICATION_JSON))
+                        , matchHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), matchHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), matchHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), matchHandler::getContent);
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), matchHandler::getContent)
+                .filter(new HandlerFilter());
     }
 
-    public static RouterFunction<?> bindToRankingHandler(RankingHandler rankingHandler) {
+    private static RouterFunction<?> bindToRankingHandler(RankingHandler rankingHandler) {
 
         return RouterFunctions
-                .route(GET(API_PATH + apiServiceConfig.getRank().getGet().get(0).getUri()).and(accept(APPLICATION_JSON)), rankingHandler::getContent)
+                .route(GET(API_PATH + apiServiceConfig.getRank().getGet()).and(accept(APPLICATION_JSON))
+                        , rankingHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent);
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent)
+                .filter(new HandlerFilter());
     }
-    */
+
+    public static RouterFunction<?> bindToHandlerEx(ApiServiceConfig apiServiceConfig, ServiceHandler serviceHandler
+            , ErrorHandler errorHandler) {
+
+        return RouterFunctions
+                .route(GET(API_PATH + apiServiceConfig.getNews().getGet()).and(accept(APPLICATION_JSON))
+                        , serviceHandler.getNewsHandler()::getContent)
+                .filter(new HandlerFilter())
+                .andOther(bindToHomeHandler(apiServiceConfig, serviceHandler.getHomeHandler()))
+                .andOther(bindToMatchHandler(apiServiceConfig, serviceHandler.getMatchHandler()))
+                .andOther(route(RequestPredicates.all(), errorHandler::notFound));
+    }
 
 }

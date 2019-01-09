@@ -15,10 +15,10 @@ public class ServiceBuilder {
     private ApiServiceConfig apiServiceConfig;
 
 
-    public BaseService homeService;
-    public BaseService newsService;
-    public BaseService matchService;
-    public BaseService rankingService;
+    private BaseService homeService;
+    private BaseService newsService;
+    private BaseService matchService;
+    private BaseService rankingService;
 
     public ServiceBuilder(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;
@@ -44,6 +44,7 @@ public class ServiceBuilder {
 
         this.homeService = getHomeService();
         this.newsService = getNewsService();
+        this.matchService = getMatchService();
     }
 
     public BaseService getNewsServiceInst() {
