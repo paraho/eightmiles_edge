@@ -38,8 +38,6 @@ public class NewsHandler extends ApiServiceHandler{
                 .transform(this::response);
     }
 
-
-
     Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
         return stringMono.flatMap(serverResponse ->
                 ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));

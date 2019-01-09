@@ -2,10 +2,13 @@ package com.paige.service.apigateway.paigeservices;
 
 import com.paige.service.apigateway.application.ApiServiceConfig;
 import com.paige.service.apigateway.model.ResultEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 public class HomeServiceImpl extends BaseService {
 
 
@@ -36,6 +39,6 @@ public class HomeServiceImpl extends BaseService {
 
     private Mono<String> buildUrl(Mono<ServerRequest> requestMono) {
 
-        return requestMono.flatMap(address -> Mono.just("hello"));
+        return Mono.just("");
     }
 }
