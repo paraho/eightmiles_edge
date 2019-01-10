@@ -25,15 +25,4 @@ public class RankingServiceImpl extends BaseService {
                 .transform(this::getContent);
     }
 
-    private Mono<ResultEntity> getContent(Mono<ServerRequest> requestMono) {
-
-        return requestMono.flatMap(url -> webClient
-                .get()
-                .uri(url.path().replace("/api", ""))
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class)));
-    }
-
-
 }

@@ -5,40 +5,53 @@ import com.paige.service.apigateway.model.ResultEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 @Slf4j
 public class HomeServiceImpl extends BaseService {
 
-
-    private final String remoteUrl1 = "http://localhost:9000/hello";
-
     public HomeServiceImpl(final ApiServiceConfig apiServiceConfig)
     {
+
         super(apiServiceConfig);
-    }
-
-    private Mono<ResultEntity> getContent(Mono<String> urlMono) {
-
-        return urlMono.flatMap(url -> webClient
-                .get()
-                .uri(remoteUrl1)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class)));
+        webClient = WebClient.create(apiServiceConfig.getHome().getBaseurl());
     }
 
     @Override
-    public Mono<ResultEntity> fromContents(Mono<ServerRequest> stringMono) {
+    public Mono<ResultEntity> fromContents(Mono<ServerRequest> requestMono) {
 
-        return stringMono
-                .transform(this::buildUrl)
+        return requestMono
                 .transform(this::getContent);
     }
 
-    private Mono<String> buildUrl(Mono<ServerRequest> requestMono) {
+/*    private Mono<ResultEntity> getContent(Mono<ServerRequest> requestMono) {
 
-        return Mono.just("");
-    }
+        return requestMono.flatMap(url -> {
+
+            Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
+
+            WebClient authClient = webClient.mutate()
+                    .defaultHeaders(httpHeaders -> {
+                        httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
+                        httpHeaders.add("USER-LEVEL",mapHeader.get("USER-LEVEL"));
+                        httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
+                        httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
+                        httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
+                    })
+                    .build();
+
+            Mono<ResultEntity> resultEntity = authClient
+                    .get()
+                    .uri(url.path().replace("/api", ""))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
+
+            return resultEntity;
+        });
+    }*/
 }

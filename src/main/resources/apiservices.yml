@@ -1,13 +1,14 @@
 apiservice:
   home:
-    baseurl: http://ipaddr:port/resource
-    get: /feed/**
-    post: /feed/**
+    baseurl: http://172.20.92.215:8001
+    get: /feeds/**
+    post: /feeds/**
 
   # baseurl(API 서버주소): http://ipaddr:port
   # method(get,post,put,del): /{service name}/** (URI 경로)
   news:
     baseurl: http://172.20.92.214:31005
+    #baseurl: http://localhost:31005
     get: /news/**
 
   match:
