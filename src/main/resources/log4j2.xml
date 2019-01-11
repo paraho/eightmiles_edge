@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" name="MyApp">
+    <Properties>
+        <Property name="LOG_PATTERN">
+            <!--"%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n"-->
+            <!-- 디폴트 패턴 적용 -->
+            %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <RollingRandomAccessFile name="LogApp" fileName="log/app.log" filePattern="log/app/app-%d{yyyy-MM-dd_HH}_%i.log" immediateFlush="false" append="true" ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="4 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="500"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="Exception" fileName="log/excetpion.log" filePattern="log/exception/exception-%d{yyyy-MM-dd_HH}_%i.log" immediateFlush="false" append="true" ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="4 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="500"/>
+        </RollingRandomAccessFile>
+
+        <Async name="ASYNC_LogApp" includeLocation="true">
+            <AppenderRef ref="LogApp" />
+        </Async>
+
+        <Async name="ASYNC_Exception" includeLocation="true">
+            <AppenderRef ref="Exception" />
+        </Async>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.paige.service" level="debug" additivity="false">
+            <AppenderRef ref="ConsoleAppender" />
+        </Logger>
+
+        <Logger name="Application" level="info" additivity="false">
+            <AppenderRef ref="ASYNC_LogApp"/>
+        </Logger>
+
+
+        <Root level="debug">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="ASYNC_Exception"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -7,25 +7,29 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Slf4j
+import java.util.logging.Logger;
+
 @SpringBootApplication
 public class PaigeEdgeApplication implements CommandLineRunner {
+
+    Logger logger = Logger.getLogger("Application");
 
     @Autowired
     ApiServiceConfig apiServiceConfig;
 
     public static void main(String[] args){
 
+        //TODO : 설정정보로 빼기
         SpringApplication.run(PaigeEdgeApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-/*        ApiServiceInfo getinfo = apiServiceConfig.getHome();
+        ApiServiceInfo getinfo = apiServiceConfig.getHome();
         ApiServiceInfo newsinfo = apiServiceConfig.getNews();
-        log.info("service url" + getinfo.getBaseurl());
-        log.info("service url" + newsinfo.getBaseurl());*/
+        logger.info("service url" + getinfo.getBaseurl());
+        logger.info("service url" + newsinfo.getBaseurl());
     }
 
 }

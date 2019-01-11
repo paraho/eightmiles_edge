@@ -34,6 +34,7 @@ public abstract class BaseService {
                         httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
                         httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
                         httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
+                        httpHeaders.add("ACCESS-TOKEN",mapHeader.get("ACCESS-TOKEN"));
                     })
                     .build();
 

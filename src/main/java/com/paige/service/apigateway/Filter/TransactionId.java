@@ -7,11 +7,12 @@ public class TransactionId {
     static class Unique {
         private AtomicLong c = new AtomicLong(System.currentTimeMillis());
 
-        public void increment() {
+        private void increment() {
             c.getAndIncrement();
         }
 
         public long value() {
+            increment();
             return c.get();
         }
     }
