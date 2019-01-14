@@ -8,14 +8,14 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-public class NewsServiceImpl extends BaseService {
+public class CommunityServiceImpl extends BaseService {
 
 
-    public NewsServiceImpl(final ApiServiceConfig apiServiceConfig)
+    public CommunityServiceImpl(final ApiServiceConfig apiServiceConfig)
     {
 
         super(apiServiceConfig);
-        webClient = WebClient.create(apiServiceConfig.getNews().getBaseurl());
+        webClient = WebClient.create(apiServiceConfig.getCommunity().getBaseurl());
     }
 
 
@@ -28,17 +28,20 @@ public class NewsServiceImpl extends BaseService {
 
     @Override
     protected Mono<ResultEntity> postContents(Mono<ServerRequest> requestMono) {
-        return null;
+        return requestMono
+                .transform(this::postContents);
     }
 
     @Override
     protected Mono<ResultEntity> putContents(Mono<ServerRequest> requestMono) {
-        return null;
+        return requestMono
+                .transform(this::putContents);
     }
 
     @Override
     protected Mono<ResultEntity> delContents(Mono<ServerRequest> requestMono) {
-        return null;
+        return requestMono
+                .transform(this::delContents);
     }
 
 }

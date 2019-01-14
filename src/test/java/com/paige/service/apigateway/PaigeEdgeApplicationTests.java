@@ -1,6 +1,6 @@
 package com.paige.service.apigateway;
 
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

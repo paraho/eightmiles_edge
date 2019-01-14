@@ -27,11 +27,12 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
 //            return ServerResponse.status(HttpStatus.FORBIDDEN).build();
 //        }
 
+        /*
         Map<String, String> requestHeaders =
                 request.exchange().getRequest().getHeaders().toSingleValueMap();
 
         for (String key : requestHeaders.keySet()) {
-            logger.info("{} : {}", key, requestHeaders.get(key));
+            logger.info("[Request Info] :{} = {}", key, requestHeaders.get(key));
         }
 
         MultiValueMap<String, String> args = new LinkedMultiValueMap<>();
@@ -42,10 +43,10 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
         args.add("CLIENT-VER",
                 requestHeaders.containsKey("CLIENT-VER") == true ? requestHeaders.get("CLIENT-VER") : "");
         args.add("REQUEST-ID", Long.toString(uid.value()));
-        args.add("ACCESS_TOKEN", "secret-key");
+        args.add("ACCESS-TOKEN", "secret-key");
 
         request.exchange().getResponse().getHeaders().addAll(args);
-
+*/
         return next.handle(request);
     }
 

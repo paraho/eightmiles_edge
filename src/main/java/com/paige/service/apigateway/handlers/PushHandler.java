@@ -3,23 +3,23 @@ package com.paige.service.apigateway.handlers;
 import com.paige.service.apigateway.apiconfig.ServiceBuilder;
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.model.ResultEntity;
-import com.paige.service.apigateway.paigeservices.HomeServiceImpl;
+import com.paige.service.apigateway.paigeservices.NewsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-public class HomeHandler extends ApiServiceHandler {
+public class PushHandler extends ApiServiceHandler{
 
-    private HomeServiceImpl contentService;
+    private NewsServiceImpl contentsService;
 
-    public HomeHandler(final ApiServiceConfig serviceConfig
+    public PushHandler(final ApiServiceConfig serviceConfig
                         , final ServiceBuilder serviceBuilder
                         , final ErrorHandler errorHandler) {
         super(serviceConfig, errorHandler, serviceBuilder);
 
-        contentService = (HomeServiceImpl) serviceBuilder.getHomeServiceInst();
+        contentsService = (NewsServiceImpl) serviceBuilder.getNewsServiceInst();
     }
 
     @Override
@@ -45,9 +45,10 @@ public class HomeHandler extends ApiServiceHandler {
         return null;
     }
 
+
     Mono<ServerResponse> buildContentResponse(Mono<ServerRequest> request) {
         return request
-                .transform(contentService::fromContents)
+                .transform(contentsService::fromContents)
                 .transform(this::response);
     }
 
@@ -55,4 +56,5 @@ public class HomeHandler extends ApiServiceHandler {
         return stringMono.flatMap(serverResponse ->
                 ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
     }
+
 }

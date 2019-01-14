@@ -8,10 +8,10 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-public class NewsServiceImpl extends BaseService {
+public class AuthServiceImpl extends BaseService {
 
 
-    public NewsServiceImpl(final ApiServiceConfig apiServiceConfig)
+    public AuthServiceImpl(final ApiServiceConfig apiServiceConfig)
     {
 
         super(apiServiceConfig);
@@ -40,5 +40,8 @@ public class NewsServiceImpl extends BaseService {
     protected Mono<ResultEntity> delContents(Mono<ServerRequest> requestMono) {
         return null;
     }
+
+    // login
+
 
 }

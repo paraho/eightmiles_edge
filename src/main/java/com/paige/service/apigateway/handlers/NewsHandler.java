@@ -1,8 +1,7 @@
 package com.paige.service.apigateway.handlers;
 
 import com.paige.service.apigateway.apiconfig.ServiceBuilder;
-import com.paige.service.apigateway.application.ApiServiceConfig;
-import com.paige.service.apigateway.model.ContentsCardResponse;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.model.ResultEntity;
 import com.paige.service.apigateway.paigeservices.NewsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +30,21 @@ public class NewsHandler extends ApiServiceHandler{
                 .onErrorResume(errorHandler::throwableError);
     }
 
+    @Override
+    public Mono<ServerResponse> postContent(ServerRequest serverRequest) {
+        return null;
+    }
+
+    @Override
+    public Mono<ServerResponse> putContent(ServerRequest serverRequest) {
+        return null;
+    }
+
+    @Override
+    public Mono<ServerResponse> delContent(ServerRequest serverRequest) {
+        return null;
+    }
+
 
     Mono<ServerResponse> buildContentResponse(Mono<ServerRequest> request) {
         return request
@@ -43,8 +57,4 @@ public class NewsHandler extends ApiServiceHandler{
                 ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
     }
 
-    Mono<ServerResponse> serverResponse(Mono<ContentsCardResponse> contentsCardResponseMono) {
-        return contentsCardResponseMono.flatMap(serverResponse ->
-                ServerResponse.ok().body(Mono.just(serverResponse), ContentsCardResponse.class));
-    }
 }

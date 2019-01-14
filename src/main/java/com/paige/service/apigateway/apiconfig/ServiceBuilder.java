@@ -1,6 +1,6 @@
 package com.paige.service.apigateway.apiconfig;
 
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.paige.service.apigateway.paigeservices.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -12,13 +12,14 @@ import javax.annotation.PostConstruct;
 @Component
 public class ServiceBuilder {
 
-    private ApiServiceConfig apiServiceConfig;
+    private final ApiServiceConfig apiServiceConfig;
 
 
     private BaseService homeService;
     private BaseService newsService;
     private BaseService matchService;
     private BaseService rankingService;
+    private BaseService communityService;
 
     public ServiceBuilder(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;
@@ -26,18 +27,29 @@ public class ServiceBuilder {
 
     @Bean
     BaseService getHomeService() {
+
         return new HomeServiceImpl(apiServiceConfig);
     }
 
     @Bean
-    BaseService getNewsService() { return new NewsServiceImpl(apiServiceConfig); }
+    BaseService getNewsService() {
+        return new NewsServiceImpl(apiServiceConfig);
+    }
 
     @Bean
-    BaseService getMatchService() { return new MatchServiceImpl(apiServiceConfig); }
+    BaseService getMatchService() {
+        return new MatchServiceImpl(apiServiceConfig);
+    }
 
     @Bean
-    BaseService getRankingService() { return new RankingServiceImpl(apiServiceConfig); }
+    BaseService getRankingService() {
+        return new RankingServiceImpl(apiServiceConfig);
+    }
 
+    @Bean
+    BaseService getCommunityService() {
+        return new CommunityServiceImpl(apiServiceConfig);
+    }
 
     @PostConstruct
     public void postConstruct() {
@@ -45,6 +57,7 @@ public class ServiceBuilder {
         this.homeService = getHomeService();
         this.newsService = getNewsService();
         this.matchService = getMatchService();
+        this.communityService = getCommunityService();
     }
 
     public BaseService getNewsServiceInst() {
@@ -67,5 +80,9 @@ public class ServiceBuilder {
         return this.rankingService;
     }
 
+    public BaseService getCommunityServiceInst() {
+
+        return this.communityService;
+    }
 
 }

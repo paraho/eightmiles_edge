@@ -1,6 +1,6 @@
 package com.paige.service.apigateway.paigeservices;
 
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.model.ResultEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,6 +22,21 @@ public class HomeServiceImpl extends BaseService {
 
         return requestMono
                 .transform(this::getContent);
+    }
+
+    @Override
+    protected Mono<ResultEntity> postContents(Mono<ServerRequest> requestMono) {
+        return null;
+    }
+
+    @Override
+    protected Mono<ResultEntity> putContents(Mono<ServerRequest> requestMono) {
+        return null;
+    }
+
+    @Override
+    protected Mono<ResultEntity> delContents(Mono<ServerRequest> requestMono) {
+        return null;
     }
 
 /*    private Mono<ResultEntity> getContent(Mono<ServerRequest> requestMono) {

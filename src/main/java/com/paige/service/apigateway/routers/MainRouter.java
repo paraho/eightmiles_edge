@@ -1,6 +1,6 @@
 package com.paige.service.apigateway.routers;
 
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.handlers.ApiHandler;
 import com.paige.service.apigateway.handlers.ErrorHandler;
 import com.paige.service.apigateway.handlers.ServiceHandler;

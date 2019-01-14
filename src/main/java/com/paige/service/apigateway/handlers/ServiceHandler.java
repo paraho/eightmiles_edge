@@ -1,7 +1,7 @@
 package com.paige.service.apigateway.handlers;
 
 import com.paige.service.apigateway.apiconfig.ServiceBuilder;
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -39,21 +39,33 @@ public class ServiceHandler {
     }
 
     @Bean
+    CommunityHandler communityHandler() {
+
+        return new CommunityHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
+
+    @Bean
     RankingHandler rankingHandler() {
 
         return new RankingHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
     public HomeHandler getHomeHandler() {
+
         return homeHandler();
     }
 
     public NewsHandler getNewsHandler() {
+
         return newsHandler();
     }
 
     public MatchHandler getMatchHandler() {
         return matchHandler();
+    }
+
+    public CommunityHandler getCommunityHandler() {
+        return communityHandler();
     }
 
     public RankingHandler getRankingHandler() {

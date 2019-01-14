@@ -1,7 +1,7 @@
 package com.paige.service.apigateway.handlers;
 
 import com.paige.service.apigateway.apiconfig.ServiceBuilder;
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.model.ContentsCardResponse;
 import com.paige.service.apigateway.model.ResultEntity;
 import com.paige.service.apigateway.paigeservices.NewsServiceImpl;
@@ -29,6 +29,21 @@ public class RankingHandler extends ApiServiceHandler {
                 .doOnNext(req -> log.info(req.toString()))
                 .transform(this::buildContentResponse)
                 .onErrorResume(errorHandler::throwableError);
+    }
+
+    @Override
+    public Mono<ServerResponse> postContent(ServerRequest serverRequest) {
+        return null;
+    }
+
+    @Override
+    public Mono<ServerResponse> putContent(ServerRequest serverRequest) {
+        return null;
+    }
+
+    @Override
+    public Mono<ServerResponse> delContent(ServerRequest serverRequest) {
+        return null;
     }
 
 

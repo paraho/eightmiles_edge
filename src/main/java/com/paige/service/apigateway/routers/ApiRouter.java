@@ -1,10 +1,8 @@
 package com.paige.service.apigateway.routers;
 
 import com.paige.service.apigateway.Filter.HandlerFilter;
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.handlers.*;
-import org.springframework.http.server.reactive.HttpHandler;
-import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -44,8 +42,8 @@ public class ApiRouter {
                         , homeHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), homeHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), homeHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), homeHandler::getContent)
-                .filter(new HandlerFilter());
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), homeHandler::getContent);
+                //.filter(new HandlerFilter());
     }
 
     private static RouterFunction<?> bindToNewsHandler(ApiServiceConfig apiServiceConfig, NewsHandler newsHandler) {
@@ -55,8 +53,8 @@ public class ApiRouter {
                         , newsHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), newsHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), newsHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), newsHandler::getContent)
-                .filter(new HandlerFilter());
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), newsHandler::getContent);
+                //.filter(new HandlerFilter());
     }
 
     private static RouterFunction<?> bindToMatchHandler(ApiServiceConfig apiServiceConfig, MatchHandler matchHandler) {
@@ -66,8 +64,8 @@ public class ApiRouter {
                         , matchHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), matchHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), matchHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), matchHandler::getContent)
-                .filter(new HandlerFilter());
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), matchHandler::getContent);
+                //.filter(new HandlerFilter());
     }
 
     private static RouterFunction<?> bindToRankingHandler(RankingHandler rankingHandler) {
@@ -77,8 +75,22 @@ public class ApiRouter {
                         , rankingHandler::getContent)
                 .andRoute(POST("/api/post/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent)
                 .andRoute(PUT("/api/put/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent)
-                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent)
-                .filter(new HandlerFilter());
+                .andRoute(DELETE("/api/delete/**").and(accept(APPLICATION_JSON)), rankingHandler::getContent);
+                //.filter(new HandlerFilter());
+    }
+
+    private static RouterFunction<?> bindToCommunityHandler(ApiServiceConfig apiServiceConfig, CommunityHandler communityHandler) {
+
+        return RouterFunctions
+                .route(GET(API_PATH + apiServiceConfig.getCommunity().getGet()).and(accept(APPLICATION_JSON))
+                        , communityHandler::getContent)
+                .andRoute(POST(API_PATH + apiServiceConfig.getCommunity().getGet()).and(accept(APPLICATION_JSON))
+                        , communityHandler::postContent)
+                .andRoute(PUT(API_PATH + apiServiceConfig.getCommunity().getGet()).and(accept(APPLICATION_JSON))
+                        , communityHandler::putContent)
+                .andRoute(DELETE(API_PATH + apiServiceConfig.getCommunity().getGet()).and(accept(APPLICATION_JSON))
+                        , communityHandler::delContent);
+        //.filter(new HandlerFilter());
     }
 
     public static RouterFunction<?> bindToHandlerEx(ApiServiceConfig apiServiceConfig, ServiceHandler serviceHandler
@@ -90,6 +102,7 @@ public class ApiRouter {
                 .filter(new HandlerFilter())
                 .andOther(bindToHomeHandler(apiServiceConfig, serviceHandler.getHomeHandler()))
                 .andOther(bindToMatchHandler(apiServiceConfig, serviceHandler.getMatchHandler()))
+                .andOther(bindToCommunityHandler(apiServiceConfig, serviceHandler.getCommunityHandler()))
                 .andOther(route(RequestPredicates.all(), errorHandler::notFound));
     }
 

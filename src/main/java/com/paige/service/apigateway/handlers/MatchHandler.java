@@ -1,7 +1,7 @@
 package com.paige.service.apigateway.handlers;
 
 import com.paige.service.apigateway.apiconfig.ServiceBuilder;
-import com.paige.service.apigateway.application.ApiServiceConfig;
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.paigeservices.MatchServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -23,6 +23,21 @@ public class MatchHandler extends ApiServiceHandler{
 
     @Override
     public Mono<ServerResponse> getContent(ServerRequest serverRequest) {
+        return null;
+    }
+
+    @Override
+    public Mono<ServerResponse> postContent(ServerRequest serverRequest) {
+        return null;
+    }
+
+    @Override
+    public Mono<ServerResponse> putContent(ServerRequest serverRequest) {
+        return null;
+    }
+
+    @Override
+    public Mono<ServerResponse> delContent(ServerRequest serverRequest) {
         return null;
     }
 }

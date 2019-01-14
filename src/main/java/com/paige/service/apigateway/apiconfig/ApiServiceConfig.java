@@ -1,6 +1,7 @@
-package com.paige.service.apigateway.application;
+package com.paige.service.apigateway.apiconfig;
 
 import com.paige.service.apigateway.apiconfig.ApiServiceInfo;
+import com.paige.service.apigateway.application.ApplicationPropertyFactory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class ApiServiceConfig {
      ApiServiceInfo news;
      ApiServiceInfo match;
      ApiServiceInfo rank;
+     ApiServiceInfo community;
 
 }
 

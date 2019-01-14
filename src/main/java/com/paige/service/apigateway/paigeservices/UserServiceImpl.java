@@ -8,10 +8,10 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-public class NewsServiceImpl extends BaseService {
+public class UserServiceImpl extends BaseService {
 
 
-    public NewsServiceImpl(final ApiServiceConfig apiServiceConfig)
+    public UserServiceImpl(final ApiServiceConfig apiServiceConfig)
     {
 
         super(apiServiceConfig);
