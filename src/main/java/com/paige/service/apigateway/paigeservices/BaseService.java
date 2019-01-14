@@ -24,139 +24,111 @@ public abstract class BaseService {
     protected abstract Mono<ResultEntity> putContents(Mono<ServerRequest> requestMono);
     protected abstract Mono<ResultEntity> delContents(Mono<ServerRequest> requestMono);
 
+
+    protected void buildHeader(ServerRequest requestMono) {
+        Map<String, String> mapHeader
+                = requestMono.exchange().getResponse().getHeaders().toSingleValueMap();
+
+        webClient
+                .mutate()
+                .defaultHeaders(httpHeaders -> {
+                    httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
+                    httpHeaders.add("USER-LEVEL",mapHeader.get("USER-LEVEL"));
+                    httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
+                    httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
+                    httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
+                    httpHeaders.add("ACCESS-TOKEN",mapHeader.get("ACCESS-TOKEN"));
+                })
+                .build();
+    }
+
+    @SuppressWarnings("Duplicates")
     protected Mono<ResultEntity> getContent(Mono<ServerRequest> requestMono) {
 
-        return requestMono.flatMap(url -> {
+        return requestMono
+                .doOnNext(this::buildHeader)
+                .flatMap(url -> {
 
-            Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
+                    String uriInfo = url.path().replace("api/", "");
+                    String queryParam = url.exchange().getRequest().getURI().getQuery();
+                    if (url.exchange().getRequest().getURI().getQuery() != null)
+                        uriInfo = uriInfo + "?" + queryParam;
 
-            String uriInfo = url.exchange().getRequest().getURI().getPath();
-            String queryParam = url.exchange().getRequest().getURI().getQuery();
-            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
-                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
-
-            WebClient authClient = webClient.mutate()
-                    .defaultHeaders(httpHeaders -> {
-                        httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
-                        httpHeaders.add("USER-LEVEL",mapHeader.get("USER-LEVEL"));
-                        httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
-                        httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
-                        httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
-                        httpHeaders.add("ACCESS-TOKEN",mapHeader.get("ACCESS-TOKEN"));
-                    })
-                    .build();
-
-            Mono<ResultEntity> resultEntity = authClient
-                    .get()
-                    .uri(uriInfo)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
-            //url.path().replace("/api", "")
-            return resultEntity;
-        });
+                    Mono<ResultEntity> resultEntity = webClient
+                            .get()
+                            .uri(uriInfo)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .exchange()
+                            .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
+                    return resultEntity;
+                });
     }
 
+
+    @SuppressWarnings("Duplicates")
     protected Mono<ResultEntity> postContent(Mono<ServerRequest> requestMono) {
 
-        return requestMono.flatMap(url -> {
+        return requestMono
+                .doOnNext(this::buildHeader)
+                .flatMap(url -> {
 
-            Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
+                    String uriInfo = url.path().replace("api/", "");
+                    String queryParam = url.exchange().getRequest().getURI().getQuery();
+                    if (url.exchange().getRequest().getURI().getQuery() != null)
+                        uriInfo = uriInfo + "?" + queryParam;
 
-            String uriInfo = url.exchange().getRequest().getURI().getPath();
-            String queryParam = url.exchange().getRequest().getURI().getQuery();
-            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
-                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
-
-            WebClient authClient = webClient.mutate()
-                    .defaultHeaders(httpHeaders -> {
-                        httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
-                        httpHeaders.add("USER-LEVEL",mapHeader.get("USER-LEVEL"));
-                        httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
-                        httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
-                        httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
-                        httpHeaders.add("ACCESS-TOKEN",mapHeader.get("ACCESS-TOKEN"));
-                    })
-                    .build();
-
-            Mono<ResultEntity> resultEntity = authClient
-                    .post()
-                    .uri(url.path().replace("/api", ""))
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
-
-            return resultEntity;
-        });
+                    Mono<ResultEntity> resultEntity = webClient
+                            .get()
+                            .uri(uriInfo)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .exchange()
+                            .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
+                    return resultEntity;
+                });
     }
 
+    @SuppressWarnings("Duplicates")
     protected Mono<ResultEntity> putContent(Mono<ServerRequest> requestMono) {
 
-        return requestMono.flatMap(url -> {
+        return requestMono
+                .doOnNext(this::buildHeader)
+                .flatMap(url -> {
 
-            Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
+                    String uriInfo = url.path().replace("api/", "");
+                    String queryParam = url.exchange().getRequest().getURI().getQuery();
+                    if (url.exchange().getRequest().getURI().getQuery() != null)
+                        uriInfo = uriInfo + "?" + queryParam;
 
-            String uriInfo = url.exchange().getRequest().getURI().getPath();
-            String queryParam = url.exchange().getRequest().getURI().getQuery();
-            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
-                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
-
-
-            WebClient authClient = webClient.mutate()
-                    .defaultHeaders(httpHeaders -> {
-                        httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
-                        httpHeaders.add("USER-LEVEL",mapHeader.get("USER-LEVEL"));
-                        httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
-                        httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
-                        httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
-                        httpHeaders.add("ACCESS-TOKEN",mapHeader.get("ACCESS-TOKEN"));
-                    })
-                    .build();
-
-            Mono<ResultEntity> resultEntity = authClient
-                    .put()
-                    .uri(url.path().replace("/api", ""))
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
-
-            return resultEntity;
-        });
+                    Mono<ResultEntity> resultEntity = webClient
+                            .get()
+                            .uri(uriInfo)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .exchange()
+                            .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
+                    return resultEntity;
+                });
     }
 
+    @SuppressWarnings("Duplicates")
     protected Mono<ResultEntity> delContent(Mono<ServerRequest> requestMono) {
 
-        return requestMono.flatMap(url -> {
+        return requestMono
+                .doOnNext(this::buildHeader)
+                .flatMap(url -> {
 
-            Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
+                    String uriInfo = url.path().replace("api/", "");
+                    String queryParam = url.exchange().getRequest().getURI().getQuery();
+                    if (url.exchange().getRequest().getURI().getQuery() != null)
+                        uriInfo = uriInfo + "?" + queryParam;
 
-            String uriInfo = url.exchange().getRequest().getURI().getPath();
-            String queryParam = url.exchange().getRequest().getURI().getQuery();
-            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
-                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
-
-            WebClient authClient = webClient.mutate()
-                    .defaultHeaders(httpHeaders -> {
-                        httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
-                        httpHeaders.add("USER-LEVEL",mapHeader.get("USER-LEVEL"));
-                        httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
-                        httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
-                        httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
-                        httpHeaders.add("ACCESS-TOKEN",mapHeader.get("ACCESS-TOKEN"));
-                    })
-                    .build();
-
-            Mono<ResultEntity> resultEntity = authClient
-                    .delete()
-                    .uri(url.path().replace("/api", ""))
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
-
-            return resultEntity;
-        });
+                    Mono<ResultEntity> resultEntity = webClient
+                            .get()
+                            .uri(uriInfo)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .exchange()
+                            .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
+                    return resultEntity;
+                });
     }
-
-
 
 }

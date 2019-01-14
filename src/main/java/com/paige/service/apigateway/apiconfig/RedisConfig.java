@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
@@ -34,16 +35,30 @@ public class RedisConfig {
                 lettuceClientConfigurationBuilder.build());
         return factory;
     }
-//
+
+    @Bean
+    ReactiveRedisOperations<String, UserSessionRedis> redisOperations() {
+        Jackson2JsonRedisSerializer<UserSessionRedis> serializer = new Jackson2JsonRedisSerializer<>(UserSessionRedis.class);
+
+        RedisSerializationContext.RedisSerializationContextBuilder<String, UserSessionRedis> builder =
+                RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
+
+        RedisSerializationContext<String, UserSessionRedis> context = builder.value(serializer).build();
+
+        return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory(), context);
+    }
+
 //    @Bean
-//    ReactiveRedisTemplate<String, String> reactiveRedisTemplate(LettuceConnectionFactory factory) {
-//        return new ReactiveRedisTemplate<>(factory, RedisSerializationContext.string());
+//    RedisSerializationContext<String, String> redisSerializationContext() {}
+//    RedisSerializationContext<String, String> serializationContext = RedisSerializationContext
+//            .fromSerializer(new StringRedisSerializer());
+//    return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory(), serializationContext);
 //    }
 
 
     @Bean
     public ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
-        return new LettuceConnectionFactory();
+        return redisConnectionFactory();
     }
 
     @Bean

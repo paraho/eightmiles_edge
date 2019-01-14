@@ -58,7 +58,7 @@ public class RequestFilter implements WebFilter {
 
         exchange.getResponse().getHeaders().addAll(args);
 
-        //authService.getUserSession();
+        authService.getUserSession();
 
         return chain.filter(exchange);
     }

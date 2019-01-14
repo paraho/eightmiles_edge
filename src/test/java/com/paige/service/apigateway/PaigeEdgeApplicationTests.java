@@ -30,7 +30,7 @@ public class PaigeEdgeApplicationTests {
     public void findById() {
         String accessToken = "A280C088-DB2B-4407-BE23-47F057C1BA64";
 
-        UserSessionRedis redisSession = sessionRedisHashRepository.findById(accessToken).block();
+        UserSessionRedis redisSession = sessionRedisHashRepository.findById(accessToken).get();
         System.out.println("--log :" + redisSession.getUserId());
         System.out.println("--log :" + redisSession.getAccessToken());
         System.out.println("--log :" + redisSession.getDeviceUuid());
