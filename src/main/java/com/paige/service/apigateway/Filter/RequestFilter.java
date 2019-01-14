@@ -30,8 +30,8 @@ public class RequestFilter implements WebFilter {
         }
 
         MultiValueMap<String, String> args = new LinkedMultiValueMap<>();
-        args.add("USER-ID", "baseball000001");
-        args.add("USER-LEVEL","user");
+        args.add("USER-ID", "1111");
+        args.add("USER-LEVEL","USER");
         args.add("CLIENT-OS",
                 requestHeaders.containsKey("CLIENT-OS") == true ? requestHeaders.get("CLIENT-OS") : "");
         args.add("CLIENT-VER",
