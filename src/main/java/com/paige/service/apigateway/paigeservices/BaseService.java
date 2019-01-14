@@ -30,6 +30,11 @@ public abstract class BaseService {
 
             Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
 
+            String uriInfo = url.exchange().getRequest().getURI().getPath();
+            String queryParam = url.exchange().getRequest().getURI().getQuery();
+            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
+                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
+
             WebClient authClient = webClient.mutate()
                     .defaultHeaders(httpHeaders -> {
                         httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
@@ -43,11 +48,11 @@ public abstract class BaseService {
 
             Mono<ResultEntity> resultEntity = authClient
                     .get()
-                    .uri(url.path().replace("/api", ""))
+                    .uri(uriInfo)
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
                     .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
-
+            //url.path().replace("/api", "")
             return resultEntity;
         });
     }
@@ -57,6 +62,11 @@ public abstract class BaseService {
         return requestMono.flatMap(url -> {
 
             Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
+
+            String uriInfo = url.exchange().getRequest().getURI().getPath();
+            String queryParam = url.exchange().getRequest().getURI().getQuery();
+            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
+                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
 
             WebClient authClient = webClient.mutate()
                     .defaultHeaders(httpHeaders -> {
@@ -86,6 +96,12 @@ public abstract class BaseService {
 
             Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
 
+            String uriInfo = url.exchange().getRequest().getURI().getPath();
+            String queryParam = url.exchange().getRequest().getURI().getQuery();
+            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
+                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
+
+
             WebClient authClient = webClient.mutate()
                     .defaultHeaders(httpHeaders -> {
                         httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
@@ -113,6 +129,11 @@ public abstract class BaseService {
         return requestMono.flatMap(url -> {
 
             Map<String, String> mapHeader = url.exchange().getResponse().getHeaders().toSingleValueMap();
+
+            String uriInfo = url.exchange().getRequest().getURI().getPath();
+            String queryParam = url.exchange().getRequest().getURI().getQuery();
+            if (!url.exchange().getRequest().getURI().getQuery().isEmpty())
+                uriInfo = (uriInfo + "?" + queryParam).replace("api/", "");
 
             WebClient authClient = webClient.mutate()
                     .defaultHeaders(httpHeaders -> {
