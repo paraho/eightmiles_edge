@@ -49,6 +49,7 @@ dependencies {
     implementation('org.springframework.session:spring-session-data-redis')
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
     compileOnly('org.projectlombok:lombok')
+    compile 'javax.el:javax.el-api:2.2.4'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('io.projectreactor:reactor-test')
 

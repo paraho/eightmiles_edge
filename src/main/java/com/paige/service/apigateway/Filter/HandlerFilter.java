@@ -52,14 +52,18 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
         Map<String, String> requestHeaders =
                 request.exchange().getRequest().getHeaders().toSingleValueMap();
 
-        if (!requestHeaders.containsKey("ACCESS-TOKEN")
+
+/*        if (!requestHeaders.containsKey("ACCESS-TOKEN")
             || requestHeaders.get("ACCESS-TOKEN").isEmpty()) {
 
             return ServerResponse.ok().body(
                     BodyInserters.fromObject(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "")));
         }
 
-        return this.authService.getUserSession(requestHeaders.get("ACCESS-TOKEN"))
+
+        return this.authService.getUserSession(requestHeaders.get("ACCESS-TOKEN"))*/
+        String sessionId = "session:A7107EF1-E243-43CB-995A-D606D4FB6B9A";
+        return this.authService.getUserSession(sessionId)
                 .flatMap(
                     sessionRedis -> {
                         if(sessionRedis == null) {
