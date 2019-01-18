@@ -11,8 +11,8 @@ import java.util.Map;
 
 public abstract class BaseService {
 
-    WebClient webClient;
-    ApiServiceConfig apiServiceConfig;
+    protected WebClient webClient;
+    protected ApiServiceConfig apiServiceConfig;
 
     public BaseService(ApiServiceConfig apiServiceConfig) {
 
@@ -26,18 +26,21 @@ public abstract class BaseService {
 
 
     protected void buildHeader(ServerRequest requestMono) {
-        Map<String, String> mapHeader
+        Map<String, String> resHeaders
                 = requestMono.exchange().getResponse().getHeaders().toSingleValueMap();
+
+        Map<String, String> reqHeaders
+                = requestMono.exchange().getRequest().getHeaders().toSingleValueMap();
 
         webClient
                 .mutate()
                 .defaultHeaders(httpHeaders -> {
-                    httpHeaders.add("USER-ID", mapHeader.get("USER-ID"));
-                    httpHeaders.add("USER-LEVEL",mapHeader.get("USER-LEVEL"));
-                    httpHeaders.add("CLIENT-OS",mapHeader.get("CLIENT-OS"));
-                    httpHeaders.add("CLIENT-VER",mapHeader.get("CLIENT-VER"));
-                    httpHeaders.add("REQUEST-ID",mapHeader.get("REQUEST-ID"));
-                    httpHeaders.add("ACCESS-TOKEN",mapHeader.get("ACCESS-TOKEN"));
+                    httpHeaders.add("USER-ID", reqHeaders.get("USER-ID"));
+                    httpHeaders.add("USER-LEVEL",reqHeaders.get("USER-LEVEL"));
+                    httpHeaders.add("CLIENT-OS",resHeaders.get("CLIENT-OS"));
+                    httpHeaders.add("CLIENT-VER",resHeaders.get("CLIENT-VER"));
+                    httpHeaders.add("REQUEST-ID",resHeaders.get("REQUEST-ID"));
+                    httpHeaders.add("ACCESS-TOKEN",resHeaders.get("ACCESS-TOKEN"));
                 })
                 .build();
     }

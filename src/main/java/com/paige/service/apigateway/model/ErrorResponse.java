@@ -3,6 +3,7 @@ package com.paige.service.apigateway.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 @Data
 public class ErrorResponse {
@@ -17,4 +18,13 @@ public class ErrorResponse {
         this.error_msg = errorMsg;
     }
 
+    @JsonCreator
+    public ErrorResponse(@JsonProperty("error") final String error) {
+        this.error_msg = error;
+        this.error_code = HttpStatus.INTERNAL_SERVER_ERROR.value();
+    }
+
+    public String getError() {
+        return error_msg;
+    }
 }

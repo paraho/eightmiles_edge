@@ -26,10 +26,7 @@ public class ServiceBuilder {
     }
 
     @Bean
-    BaseService getHomeService() {
-
-        return new HomeServiceImpl(apiServiceConfig);
-    }
+    BaseService getHomeService() { return new HomeServiceImpl(apiServiceConfig); }
 
     @Bean
     BaseService getNewsService() {
@@ -51,12 +48,14 @@ public class ServiceBuilder {
         return new CommunityServiceImpl(apiServiceConfig);
     }
 
+
     @PostConstruct
     public void postConstruct() {
 
         this.homeService = getHomeService();
         this.newsService = getNewsService();
         this.matchService = getMatchService();
+        this.rankingService = getRankingService();
         this.communityService = getCommunityService();
     }
 

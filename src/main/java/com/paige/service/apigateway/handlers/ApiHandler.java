@@ -1,6 +1,5 @@
 package com.paige.service.apigateway.handlers;
 
-import com.paige.service.apigateway.model.ContentsCardResponse;
 import com.paige.service.apigateway.paigeservices.ContentsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -38,12 +37,6 @@ public class ApiHandler {
         return stringMono.flatMap(serverResponse ->
                 ServerResponse.ok().body(Mono.just(serverResponse), String.class));
     }
-
-    Mono<ServerResponse> serverResponse(Mono<ContentsCardResponse> contentsCardResponseMono) {
-        return contentsCardResponseMono.flatMap(serverResponse ->
-                ServerResponse.ok().body(Mono.just(serverResponse), ContentsCardResponse.class));
-    }
-
 
 
 }

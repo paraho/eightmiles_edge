@@ -1,77 +1,60 @@
 package com.paige.service.apigateway.paigeservices;
 
 import com.paige.service.apigateway.model.UserSessionRedis;
-import com.paige.service.apigateway.repository.SessionRedisHashRepository;
+import com.paige.service.apigateway.repository.UserAuthRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.redis.core.ReactiveHashOperations;
-import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @ComponentScan("com.paige.service.*")
 public class AuthServiceImpl {
 
-    @Autowired
-    private SessionRedisHashRepository sessionRedisHashRepository;
-    private final ReactiveRedisOperations<String, UserSessionRedis> coffeeOps;
-
-
-    public AuthServiceImpl(ReactiveRedisOperations<String, UserSessionRedis> coffeeOps) {
-        this.coffeeOps = coffeeOps;
-    }
+    private final UserAuthRepository template;
 
 //    @Autowired
-//    ReactiveRedisTemplate stringTemplate;
+//    private SessionRedisHashRepository sessionRedisHashRepository;
 
-//    public AuthServiceImpl(final ApiServiceConfig apiServiceConfig)
-//    {
-//
-//        super(apiServiceConfig);
-//        webClient = WebClient.create(apiServiceConfig.getNews().getBaseurl());
-//    }
-//
-//
-//    @Override
-//    public Mono<ResultEntity> fromContents(Mono<ServerRequest> requestMono) {
-//
-//        return requestMono
-//                .transform(this::getContent);
-//    }
-//
-//    @Override
-//    protected Mono<ResultEntity> postContents(Mono<ServerRequest> requestMono) {
-//        return null;
-//    }
-//
-//    @Override
-//    protected Mono<ResultEntity> putContents(Mono<ServerRequest> requestMono) {
-//        return null;
-//    }
-//
-//    @Override
-//    protected Mono<ResultEntity> delContents(Mono<ServerRequest> requestMono) {
-//        return null;
-//    }
 
-    public UserSessionRedis getUserSession() {
+    public AuthServiceImpl(UserAuthRepository template) {
+        this.template = template;
+    }
 
-//        List<UserSessionRedis> list = (List<UserSessionRedis>) sessionRedisHashRepository.findAll();
-//        for (UserSessionRedis userSessionRedis:
-//             list) {
-//            log.info(userSessionRedis.toString());
-//        }
-//
-//        log.info("session test");
-//        return sessionRedisHashRepository
-//                .findById("session:A5153684-8FEF-4D7F-93E4-A5BA14776682").get();
+    public Mono<UserSessionRedis> getUserSession(String sessionId) {
 
-        return null;
+        Mono<UserSessionRedis> userSessionRedis
+                = template.findBySessionId(sessionId);
 
+        return userSessionRedis;
+    }
+
+    public UserSessionRedis testSession() {
+
+        String userId = "3333";
+        String accessToken = UUID.randomUUID().toString().toUpperCase();
+        String deviceUUID = "aaaaaaa3333";
+        String userLevel = "GUEST";
+        String os = "ios";
+        String clientVersion = "1.0";
+        String team = "NC";
+
+        Long expritedTime = 20L;
+
+        UserSessionRedis userSessionRedis = UserSessionRedis.builder()
+                .userId(userId)
+                .accessToken(accessToken)
+                .deviceUuid(deviceUUID)
+                .userLevel(userLevel)
+                .os(os)
+                .clientVersion(clientVersion)
+                .team(team)
+                .expiredTime(expritedTime.toString())
+                .build();
+        return userSessionRedis;
     }
 
 

@@ -1,8 +1,7 @@
 package com.paige.service.apigateway.handlers;
 
-import com.paige.service.apigateway.apiconfig.ServiceBuilder;
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
-import com.paige.service.apigateway.model.ContentsCardResponse;
+import com.paige.service.apigateway.apiconfig.ServiceBuilder;
 import com.paige.service.apigateway.model.ResultEntity;
 import com.paige.service.apigateway.paigeservices.NewsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -53,15 +52,9 @@ public class RankingHandler extends ApiServiceHandler {
                 .transform(this::response);
     }
 
-
-
     Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
         return stringMono.flatMap(serverResponse ->
                 ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
     }
 
-    Mono<ServerResponse> serverResponse(Mono<ContentsCardResponse> contentsCardResponseMono) {
-        return contentsCardResponseMono.flatMap(serverResponse ->
-                ServerResponse.ok().body(Mono.just(serverResponse), ContentsCardResponse.class));
-    }
 }

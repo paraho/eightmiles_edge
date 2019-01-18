@@ -34,6 +34,9 @@ class ThrowableTranslator {
     }
 
     static <T extends Throwable> Mono<ThrowableTranslator> translate(final Mono<T> throwable) {
-        return throwable.flatMap(error -> Mono.just(new ThrowableTranslator(error)));
+        return throwable.flatMap(
+                error ->
+                        Mono.just(new ThrowableTranslator(error))
+        );
     }
 }

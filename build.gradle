@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.1.1.RELEASE'
+        springBootVersion = '2.1.2.RELEASE'
         slf4jVersion = '1.7.21'
         log4j2Version = '2.5'
         commonsLogging = '1.2'
@@ -42,9 +42,9 @@ dependencies {
 
     // Springframework
     implementation('org.springframework.boot:spring-boot-starter-actuator')
-    implementation('org.springframework.boot:spring-boot-starter-data-redis-reactive')
+    implementation('org.springframework.boot:spring-boot-starter-data-redis')
     implementation('org.springframework.boot:spring-boot-starter-webflux')
-    implementation('org.springframework.cloud:spring-cloud-starter-gateway')
+    //implementation('org.springframework.cloud:spring-cloud-starter-gateway')
     implementation('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
     implementation('org.springframework.session:spring-session-data-redis')
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
