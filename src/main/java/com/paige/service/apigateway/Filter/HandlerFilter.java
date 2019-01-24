@@ -2,17 +2,14 @@ package com.paige.service.apigateway.Filter;
 
 
 import com.paige.service.apigateway.handlers.ErrorHandler;
-import com.paige.service.apigateway.model.ErrorResponse;
 import com.paige.service.apigateway.paigeservices.AuthServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerFilterFunction;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -33,7 +30,7 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
 
     public static Logger logger = LogManager.getLogger("Application");
 
-    final TransactionId.Unique uid = new TransactionId.Unique();
+    final LocalTransactionId.Unique uid = new LocalTransactionId.Unique();
 
     public HandlerFilter(AuthServiceImpl authService) {
         this.authService = authService;

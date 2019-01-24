@@ -2,7 +2,6 @@ package com.paige.service.apigateway.handlers;
 
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.apiconfig.ServiceBuilder;
-import com.paige.service.apigateway.model.ResultEntity;
 import com.paige.service.apigateway.paigeservices.CommunityServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -19,7 +18,7 @@ public class CommunityHandler extends ApiServiceHandler{
                         , final ErrorHandler errorHandler) {
         super(serviceConfig, errorHandler, serviceBuilder);
 
-        contentsService = (CommunityServiceImpl) serviceBuilder.getCommunityServiceInst();
+        contentsService = (CommunityServiceImpl) serviceBuilder.getCommunityService();
     }
 
     @Override
@@ -60,10 +59,4 @@ public class CommunityHandler extends ApiServiceHandler{
                 .transform(contentsService::fromContents)
                 .transform(this::response);
     }
-
-    Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
-        return stringMono.flatMap(serverResponse ->
-                ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
-    }
-
 }

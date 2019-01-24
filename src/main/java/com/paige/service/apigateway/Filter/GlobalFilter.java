@@ -1,5 +1,6 @@
 package com.paige.service.apigateway.Filter;
 
+import com.paige.service.apigateway.util.camflake.Camflake;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,11 +21,14 @@ import java.util.Map;
 public class GlobalFilter implements WebFilter {
 
     public static Logger logger = LogManager.getLogger("Application");
-    final TransactionId.Unique uid = new TransactionId.Unique();
+    final LocalTransactionId.Unique uid = new LocalTransactionId.Unique();
+
+    final Camflake camflake = new Camflake();
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
+        long request_uid = camflake.next();
         Map<String, String> requestHeaders =
                 exchange.getRequest().getHeaders().toSingleValueMap();
 
@@ -33,7 +37,7 @@ public class GlobalFilter implements WebFilter {
                 requestHeaders.containsKey("CLIENT-OS") == true ? requestHeaders.get("CLIENT-OS") : "");
         args.add("CLIENT-VER",
                 requestHeaders.containsKey("CLIENT-VER") == true ? requestHeaders.get("CLIENT-VER") : "");
-        args.add("REQUEST-ID", Long.toString(uid.value()));
+        args.add("REQUEST-ID", Long.toString(request_uid));
 
         exchange.getResponse().getHeaders().addAll(args);
 

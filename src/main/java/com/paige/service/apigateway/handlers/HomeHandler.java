@@ -19,7 +19,7 @@ public class HomeHandler extends ApiServiceHandler {
                         , final ErrorHandler errorHandler) {
         super(serviceConfig, errorHandler, serviceBuilder);
 
-        contentService = (HomeServiceImpl) serviceBuilder.getHomeServiceInst();
+        contentService = (HomeServiceImpl) serviceBuilder.getHomeService();
     }
 
     @Override
@@ -51,8 +51,4 @@ public class HomeHandler extends ApiServiceHandler {
                 .transform(this::response);
     }
 
-    Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
-        return stringMono.flatMap(serverResponse ->
-                ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
-    }
 }

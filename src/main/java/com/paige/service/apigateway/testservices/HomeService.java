@@ -1,4 +1,4 @@
-package com.paige.service.apigateway.remote;
+package com.paige.service.apigateway.testservices;
 
 //@SpringBootApplication
 public class HomeService {

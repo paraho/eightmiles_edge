@@ -1,7 +1,7 @@
 package com.paige.service.apigateway.apiconfig;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.paige.service.apigateway.paigeservices.*;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Slf4j
+@Data
 @Component
 public class ServiceBuilder {
 
     private final ApiServiceConfig apiServiceConfig;
-
 
     private BaseService homeService;
     private BaseService newsService;
@@ -26,25 +26,25 @@ public class ServiceBuilder {
     }
 
     @Bean
-    BaseService getHomeService() { return new HomeServiceImpl(apiServiceConfig); }
+    BaseService getHomeServiceInst() { return new HomeServiceImpl(apiServiceConfig); }
 
     @Bean
-    BaseService getNewsService() {
+    BaseService getNewsServiceInst() {
         return new NewsServiceImpl(apiServiceConfig);
     }
 
     @Bean
-    BaseService getMatchService() {
+    BaseService getMatchServiceInst() {
         return new MatchServiceImpl(apiServiceConfig);
     }
 
     @Bean
-    BaseService getRankingService() {
+    BaseService getRankingServiceInst() {
         return new RankingServiceImpl(apiServiceConfig);
     }
 
     @Bean
-    BaseService getCommunityService() {
+    BaseService getCommunityServiceInst() {
         return new CommunityServiceImpl(apiServiceConfig);
     }
 
@@ -52,36 +52,11 @@ public class ServiceBuilder {
     @PostConstruct
     public void postConstruct() {
 
-        this.homeService = getHomeService();
-        this.newsService = getNewsService();
-        this.matchService = getMatchService();
-        this.rankingService = getRankingService();
-        this.communityService = getCommunityService();
-    }
-
-    public BaseService getNewsServiceInst() {
-
-        return this.newsService;
-    }
-
-    public BaseService getHomeServiceInst() {
-
-        return this.homeService;
-    }
-
-    public BaseService getMatchServiceInst() {
-
-        return this.matchService;
-    }
-
-    public BaseService getRankingServiceInst() {
-
-        return this.rankingService;
-    }
-
-    public BaseService getCommunityServiceInst() {
-
-        return this.communityService;
+        this.homeService = getHomeServiceInst();
+        this.newsService = getNewsServiceInst();
+        this.matchService = getMatchServiceInst();
+        this.rankingService = getRankingServiceInst();
+        this.communityService = getCommunityServiceInst();
     }
 
 }

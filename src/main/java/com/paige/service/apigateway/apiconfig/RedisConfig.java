@@ -3,6 +3,7 @@ package com.paige.service.apigateway.apiconfig;
 import com.paige.service.apigateway.model.UserSessionRedis;
 import com.paige.service.apigateway.repository.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
@@ -20,19 +21,22 @@ import javax.annotation.PreDestroy;
 @Configuration
 public class RedisConfig {
 
-//    @Autowired
-//    RedisConnectionFactory factory;
+    private @Value("${spring.redis.host}") String redisHost;
+    private @Value("${spring.redis.port}") int redisPort;
+    private @Value("${spring.redis.password}") String redisPassword;
 
+    // TODO : Redis Sentinel 구성으로 변경되어야 함.
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName("172.20.92.133");
-        redisStandaloneConfiguration.setPort(32223);
-        redisStandaloneConfiguration.setPassword(RedisPassword.of("reDis12#"));
+        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setPort(redisPort);
+        redisStandaloneConfiguration.setPassword(RedisPassword.of(redisPassword));
 
         LettuceClientConfiguration.LettuceClientConfigurationBuilder lettuceClientConfigurationBuilder = LettuceClientConfiguration.builder();
         LettuceConnectionFactory factory = new LettuceConnectionFactory(redisStandaloneConfiguration,
                 lettuceClientConfigurationBuilder.build());
+
         return factory;
     }
 
@@ -48,6 +52,7 @@ public class RedisConfig {
                 .hashKey(serializer)
                 .hashValue(serializer)
                 .build();
+
         return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory,
                 serializationContext);
     }
@@ -59,10 +64,6 @@ public class RedisConfig {
         RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext
                 .<String, Object>newSerializationContext(valueSerializer)
                 .key(keySerializer).hashKey(keySerializer).build();
-/*
-        return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory,
-                serializationContext);
-*/
 
         return new ReactiveRedisTemplate<>(
                 reactiveRedisConnectionFactory, serializationContext);
@@ -104,12 +105,4 @@ public class RedisConfig {
         return new ReactiveRedisTemplate<>(connectionFactory, RedisSerializationContext.string());
     }
 
-
-//    /**
-//     * Clear database before shut down.
-//     */
-//    public @PreDestroy
-//    void flushTestDb() {
-//        factory.getConnection().flushDb();
-//    }
 }

@@ -19,7 +19,7 @@ public class RankingHandler extends ApiServiceHandler {
                         , final ErrorHandler errorHandler) {
         super(serviceConfig, errorHandler, serviceBuilder);
 
-        contentsService = (NewsServiceImpl) serviceBuilder.getRankingServiceInst();
+        contentsService = (NewsServiceImpl) serviceBuilder.getRankingService();
     }
 
     @Override
@@ -51,10 +51,4 @@ public class RankingHandler extends ApiServiceHandler {
                 .transform(contentsService::fromContents)
                 .transform(this::response);
     }
-
-    Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
-        return stringMono.flatMap(serverResponse ->
-                ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
-    }
-
 }

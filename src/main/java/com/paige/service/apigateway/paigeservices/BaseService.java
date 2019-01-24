@@ -81,7 +81,7 @@ public abstract class BaseService {
                         uriInfo = uriInfo + "?" + queryParam;
 
                     Mono<ResultEntity> resultEntity = webClient
-                            .get()
+                            .post()
                             .uri(uriInfo)
                             .accept(MediaType.APPLICATION_JSON)
                             .exchange()
@@ -103,7 +103,7 @@ public abstract class BaseService {
                         uriInfo = uriInfo + "?" + queryParam;
 
                     Mono<ResultEntity> resultEntity = webClient
-                            .get()
+                            .put()
                             .uri(uriInfo)
                             .accept(MediaType.APPLICATION_JSON)
                             .exchange()
@@ -125,7 +125,7 @@ public abstract class BaseService {
                         uriInfo = uriInfo + "?" + queryParam;
 
                     Mono<ResultEntity> resultEntity = webClient
-                            .get()
+                            .delete()
                             .uri(uriInfo)
                             .accept(MediaType.APPLICATION_JSON)
                             .exchange()

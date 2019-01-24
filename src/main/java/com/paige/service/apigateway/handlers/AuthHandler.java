@@ -19,7 +19,7 @@ public class AuthHandler extends ApiServiceHandler{
                         , final ErrorHandler errorHandler) {
         super(serviceConfig, errorHandler, serviceBuilder);
 
-        contentsService = (NewsServiceImpl) serviceBuilder.getNewsServiceInst();
+        contentsService = (NewsServiceImpl) serviceBuilder.getNewsService();
     }
 
     @Override
@@ -52,9 +52,4 @@ public class AuthHandler extends ApiServiceHandler{
                 .transform(this::response);
     }
 
-    Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
-        return stringMono.flatMap(serverResponse ->
-                ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
-    }
-    
 }

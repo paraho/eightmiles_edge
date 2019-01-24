@@ -1,2 +1,7 @@
 server:
   port: 31012
+spring:
+  redis:
+    host: 172.20.92.133
+    port: 32223
+    password: reDis12#

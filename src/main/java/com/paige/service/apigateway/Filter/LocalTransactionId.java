@@ -2,7 +2,7 @@ package com.paige.service.apigateway.Filter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class TransactionId {
+public class LocalTransactionId {
 
     static class Unique {
         private AtomicLong c = new AtomicLong(System.currentTimeMillis());

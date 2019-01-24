@@ -18,7 +18,7 @@ public class MatchHandler extends ApiServiceHandler{
             , final ErrorHandler errorHandler) {
         super(serviceConfig, errorHandler, serviceBuilder);
 
-        contentsService = (MatchServiceImpl) serviceBuilder.getMatchServiceInst();
+        contentsService = (MatchServiceImpl) serviceBuilder.getMatchService();
     }
 
     @Override

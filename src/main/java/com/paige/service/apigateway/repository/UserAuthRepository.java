@@ -1,11 +1,8 @@
 package com.paige.service.apigateway.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paige.service.apigateway.exceptions.NameRequiredException;
-import com.paige.service.apigateway.exceptions.SessionException;
 import com.paige.service.apigateway.model.UserSessionRedis;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

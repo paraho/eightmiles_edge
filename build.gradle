@@ -40,16 +40,22 @@ configurations {
 
 dependencies {
 
+    /*
+        에러 발생시 아래 두개의 라이브러리 추가
+            error: javax.validation.ValidationException: HV000183: Unable to initialize 'javax.el.ExpressionFactory'.
+        compile('javax.el:javax.el-api:3.0.0')
+        compile('org.glassfish:javax.el:3.0.0')
+     */
+
     // Springframework
     implementation('org.springframework.boot:spring-boot-starter-actuator')
     implementation('org.springframework.boot:spring-boot-starter-data-redis')
     implementation('org.springframework.boot:spring-boot-starter-webflux')
+    compile('javax.el:javax.el-api:3.0.0')
+    compile('org.glassfish:javax.el:3.0.0')
     //implementation('org.springframework.cloud:spring-cloud-starter-gateway')
-    implementation('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
-    implementation('org.springframework.session:spring-session-data-redis')
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
     compileOnly('org.projectlombok:lombok')
-    compile 'javax.el:javax.el-api:2.2.4'
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('io.projectreactor:reactor-test')
 

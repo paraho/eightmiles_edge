@@ -2,7 +2,6 @@ apiservice:
   home:
     baseurl: http://172.20.92.215:8001
     get: /feeds/**
-    post: /feeds/**
 
   # baseurl(API 서버주소): http://ipaddr:port
   # method(get,post,put,del): /{service name}/** (URI 경로)

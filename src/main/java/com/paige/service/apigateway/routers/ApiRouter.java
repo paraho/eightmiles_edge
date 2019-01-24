@@ -52,9 +52,9 @@ public class ApiRouter {
         return RouterFunctions
                 .route(GET(API_PATH + apiServiceConfig.createServiceInfo(config).getGet()).and(accept(APPLICATION_JSON))
                         , handler::getContent)
-                .andRoute(POST(API_PATH + apiServiceConfig.createServiceInfo(config).getPost()), handler::getContent)
-                .andRoute(PUT(API_PATH + apiServiceConfig.createServiceInfo(config).getPut()), handler::getContent)
-                .andRoute(DELETE(API_PATH + apiServiceConfig.createServiceInfo(config).getDel()), handler::getContent)
+                .andRoute(POST(API_PATH + apiServiceConfig.createServiceInfo(config).getGet()), handler::getContent)
+                .andRoute(PUT(API_PATH + apiServiceConfig.createServiceInfo(config).getGet()), handler::getContent)
+                .andRoute(DELETE(API_PATH + apiServiceConfig.createServiceInfo(config).getGet()), handler::getContent)
                 .filter(handlerFilter);
     };
 
