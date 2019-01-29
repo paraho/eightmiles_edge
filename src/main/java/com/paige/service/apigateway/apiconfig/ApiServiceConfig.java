@@ -6,10 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
+@ComponentScan(basePackages = "com.paige.service.*")
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "apiservice")
 @PropertySource(value = {"classpath:/apiservices.yml"}, factory = ApplicationPropertyFactory.class)

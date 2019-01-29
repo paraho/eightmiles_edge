@@ -2,9 +2,8 @@ package com.paige.service.apigateway.handlers;
 
 import com.paige.service.apigateway.exceptions.PathNotFoundException;
 import com.paige.service.apigateway.model.ErrorResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -12,10 +11,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 
-@Slf4j
 public class ErrorHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(ErrorHandler.class);
+    public static Logger logger = LogManager.getLogger("Application");
     private static final String NOT_FOUND = "not found";
     private static final String ERROR_RAISED = "error raised";
 

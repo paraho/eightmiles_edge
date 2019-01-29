@@ -18,7 +18,7 @@ public class PaigeEdgeApplicationTests {
     ApiServiceConfig apiServiceConfig;
 
     @Autowired
-    private UserAuthRepository sessionRedisHashRepository;
+    UserAuthRepository sessionRedisHashRepository;
 
     @Test
     public void contextLoads() {

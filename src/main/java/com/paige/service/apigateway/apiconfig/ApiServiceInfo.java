@@ -12,9 +12,9 @@ public class ApiServiceInfo {
 
     private String baseurl;
     private String get;
-/*    private String post;
+    private String post;
     private String put;
-    private String del;*/
+    private String del;
 
 }
 

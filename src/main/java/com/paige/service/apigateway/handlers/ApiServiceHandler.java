@@ -23,10 +23,6 @@ public abstract class ApiServiceHandler {
     }
 
     public abstract Mono<ServerResponse> getContent(final ServerRequest serverRequest);
-    public abstract Mono<ServerResponse> postContent(final ServerRequest serverRequest);
-    public abstract Mono<ServerResponse> putContent(final ServerRequest serverRequest);
-    public abstract Mono<ServerResponse> delContent(final ServerRequest serverRequest);
-
 
     public Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
         return stringMono.flatMap(serverResponse ->

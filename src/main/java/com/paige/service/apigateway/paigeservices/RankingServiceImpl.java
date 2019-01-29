@@ -23,20 +23,4 @@ public class RankingServiceImpl extends BaseService {
         return requestMono
                 .transform(this::getContent);
     }
-
-    @Override
-    protected Mono<ResultEntity> postContents(Mono<ServerRequest> requestMono) {
-        return null;
-    }
-
-    @Override
-    protected Mono<ResultEntity> putContents(Mono<ServerRequest> requestMono) {
-        return null;
-    }
-
-    @Override
-    protected Mono<ResultEntity> delContents(Mono<ServerRequest> requestMono) {
-        return null;
-    }
-
 }

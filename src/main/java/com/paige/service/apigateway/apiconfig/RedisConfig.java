@@ -4,6 +4,7 @@ import com.paige.service.apigateway.model.UserSessionRedis;
 import com.paige.service.apigateway.repository.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
@@ -18,7 +19,7 @@ import org.springframework.data.redis.serializer.*;
 
 import javax.annotation.PreDestroy;
 
-@Configuration
+@SpringBootConfiguration
 public class RedisConfig {
 
     private @Value("${spring.redis.host}") String redisHost;

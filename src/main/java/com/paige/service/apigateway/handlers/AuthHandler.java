@@ -30,21 +30,6 @@ public class AuthHandler extends ApiServiceHandler{
                 .onErrorResume(errorHandler::throwableError);
     }
 
-    @Override
-    public Mono<ServerResponse> postContent(ServerRequest serverRequest) {
-        return null;
-    }
-
-    @Override
-    public Mono<ServerResponse> putContent(ServerRequest serverRequest) {
-        return null;
-    }
-
-    @Override
-    public Mono<ServerResponse> delContent(ServerRequest serverRequest) {
-        return null;
-    }
-
 
     Mono<ServerResponse> buildContentResponse(Mono<ServerRequest> request) {
         return request

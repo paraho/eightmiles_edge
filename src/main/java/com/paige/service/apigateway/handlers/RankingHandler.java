@@ -26,29 +26,14 @@ public class RankingHandler extends ApiServiceHandler {
     public Mono<ServerResponse> getContent(ServerRequest request) {
         return Mono.just(request)
                 .doOnNext(req -> log.info(req.toString()))
-                .transform(this::buildContentResponse)
-                .onErrorResume(errorHandler::throwableError);
-    }
-
-    @Override
-    public Mono<ServerResponse> postContent(ServerRequest serverRequest) {
-        return null;
-    }
-
-    @Override
-    public Mono<ServerResponse> putContent(ServerRequest serverRequest) {
-        return null;
-    }
-
-    @Override
-    public Mono<ServerResponse> delContent(ServerRequest serverRequest) {
-        return null;
+                .transform(this::buildContentResponse);
     }
 
 
     Mono<ServerResponse> buildContentResponse(Mono<ServerRequest> request) {
         return request
                 .transform(contentsService::fromContents)
-                .transform(this::response);
+                .transform(this::response)
+                .onErrorResume(errorHandler::throwableError);
     }
 }

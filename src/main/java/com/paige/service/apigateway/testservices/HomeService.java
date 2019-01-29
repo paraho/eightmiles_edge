@@ -1,5 +1,20 @@
 package com.paige.service.apigateway.testservices;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 //@SpringBootApplication
 public class HomeService {
 
@@ -30,7 +45,63 @@ public class HomeService {
 
             return new ResponseEntity<>(testEntity, HttpStatus.OK);
         }
+
+        @PostMapping("/community/posts")
+        public ResponseEntity<TestEntity> postTestService2(@RequestBody TestEntity requestEntity) {
+
+            log.info(requestEntity.toString());
+
+
+            TestEntity testEntity = new TestEntity();
+
+            DataEntity dataInfo = new DataEntity();
+            dataInfo.setCreatetime("");
+            dataInfo.setId("1");
+            dataInfo.setTeam("nc");
+            dataInfo.setType("feed");
+
+
+
+            ResultEntity resultEntity = new ResultEntity();
+
+            resultEntity.getData().add(dataInfo);
+
+            testEntity.setError_code("200");
+            testEntity.setError_msg("success");
+            testEntity.getResult().getData().add(dataInfo);
+
+            return new ResponseEntity<>(testEntity, HttpStatus.OK);
+        }
+
+        @GetMapping("/community/posts")
+        public ResponseEntity<TestEntity> getTestService2() {
+
+            //log.info(requestEntity.toString());
+
+
+            TestEntity testEntity = new TestEntity();
+
+            DataEntity dataInfo = new DataEntity();
+            dataInfo.setCreatetime("");
+            dataInfo.setId("1");
+            dataInfo.setTeam("nc");
+            dataInfo.setType("feed");
+
+
+
+            ResultEntity resultEntity = new ResultEntity();
+
+            resultEntity.getData().add(dataInfo);
+
+            testEntity.setError_code("200");
+            testEntity.setError_msg("success");
+            testEntity.getResult().getData().add(dataInfo);
+
+            return new ResponseEntity<>(testEntity, HttpStatus.OK);
+        }
+
     }
+
 
     @Data
     private static class TestEntity {
@@ -73,9 +144,6 @@ public class HomeService {
     }
 
 
-
-
-
     public static void main(String[] args) {
 
         //TODO : 설정정보로 빼기
@@ -83,3 +151,6 @@ public class HomeService {
         SpringApplication.run(HomeService.class, args);
     }*/
 }
+
+
+

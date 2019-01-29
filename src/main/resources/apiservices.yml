@@ -19,5 +19,8 @@ apiservice:
     get: /rank/**
 
   community:
-    baseurl: http://172.20.92.213:31013
+    baseurl: http://localhost:9000
     get: /community/**
+    post: /community/**
+    put: /community/**
+    del: /community/**

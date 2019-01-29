@@ -26,29 +26,13 @@ public class PushHandler extends ApiServiceHandler{
     public Mono<ServerResponse> getContent(ServerRequest request) {
         return Mono.just(request)
                 .doOnNext(req -> log.info(req.toString()))
-                .transform(this::buildContentResponse)
-                .onErrorResume(errorHandler::throwableError);
+                .transform(this::buildContentResponse);
     }
-
-    @Override
-    public Mono<ServerResponse> postContent(ServerRequest serverRequest) {
-        return null;
-    }
-
-    @Override
-    public Mono<ServerResponse> putContent(ServerRequest serverRequest) {
-        return null;
-    }
-
-    @Override
-    public Mono<ServerResponse> delContent(ServerRequest serverRequest) {
-        return null;
-    }
-
 
     Mono<ServerResponse> buildContentResponse(Mono<ServerRequest> request) {
         return request
                 .transform(contentsService::fromContents)
-                .transform(this::response);
+                .transform(this::response)
+                .onErrorResume(errorHandler::throwableError);
     }
 }

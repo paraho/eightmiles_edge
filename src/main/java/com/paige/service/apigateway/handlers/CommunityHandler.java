@@ -25,38 +25,13 @@ public class CommunityHandler extends ApiServiceHandler{
     public Mono<ServerResponse> getContent(ServerRequest request) {
         return Mono.just(request)
                 .doOnNext(req -> log.info(req.toString()))
-                .transform(this::buildContentResponse)
-                .onErrorResume(errorHandler::throwableError);
+                .transform(this::buildContentResponse);
     }
-
-    @Override
-    public Mono<ServerResponse> postContent(ServerRequest serverRequest) {
-        return Mono.just(serverRequest)
-                .doOnNext(req -> log.info(req.toString()))
-                .transform(this::buildContentResponse)
-                .onErrorResume(errorHandler::throwableError);
-    }
-
-    @Override
-    public Mono<ServerResponse> putContent(ServerRequest serverRequest) {
-        return Mono.just(serverRequest)
-                .doOnNext(req -> log.info(req.toString()))
-                .transform(this::buildContentResponse)
-                .onErrorResume(errorHandler::throwableError);
-    }
-
-    @Override
-    public Mono<ServerResponse> delContent(ServerRequest serverRequest) {
-        return Mono.just(serverRequest)
-                .doOnNext(req -> log.info(req.toString()))
-                .transform(this::buildContentResponse)
-                .onErrorResume(errorHandler::throwableError);
-    }
-
 
     Mono<ServerResponse> buildContentResponse(Mono<ServerRequest> request) {
         return request
                 .transform(contentsService::fromContents)
-                .transform(this::response);
+                .transform(this::response)
+                .onErrorResume(errorHandler::throwableError);
     }
 }
