@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-//@SpringBootApplication
+@SpringBootApplication
 public class HomeService {
 
 
-/*    @RestController
+    @RestController
     public static class MyController {
 
         @GetMapping("/news/{id}")
@@ -149,7 +149,7 @@ public class HomeService {
         //TODO : 설정정보로 빼기
         System.setProperty("SERVER.PORT","9000");
         SpringApplication.run(HomeService.class, args);
-    }*/
+    }
 }
 
 

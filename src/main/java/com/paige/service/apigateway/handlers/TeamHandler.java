@@ -6,13 +6,14 @@ import com.paige.service.apigateway.exceptions.ErrorHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RankingHandler extends ApiServiceHandler {
+public class TeamHandler extends ApiServiceHandler{
 
-    public RankingHandler(final ApiServiceConfig serviceConfig
+    public TeamHandler(final ApiServiceConfig serviceConfig
                         , final ServiceBuilder serviceBuilder
                         , final ErrorHandler errorHandler) {
 
         super(serviceConfig, errorHandler, serviceBuilder);
-        this.contentService.setBaseUrl(serviceConfig.getRanking().getBaseurl());
+        this.contentService.setBaseUrl(serviceConfig.getTeam().getBaseurl());
     }
+
 }

@@ -1,10 +1,15 @@
 package com.paige.service.apigateway.paigeservices;
 
+import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
+import com.paige.service.apigateway.model.ResultEntity;
 import com.paige.service.apigateway.model.UserSessionRedis;
 import com.paige.service.apigateway.repository.UserAuthRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -12,16 +17,22 @@ import java.util.UUID;
 @Slf4j
 @Service
 @ComponentScan("com.paige.service.*")
-public class AuthServiceImpl {
+public class AuthServiceImpl extends BaseService {
 
-    private final UserAuthRepository template;
+    @Autowired
+    UserAuthRepository template;
 
-//    @Autowired
-//    private SessionRedisHashRepository sessionRedisHashRepository;
+    public AuthServiceImpl(final ApiServiceConfig apiServiceConfig)
+    {
+        super(apiServiceConfig);
+    }
 
+    @Override
+    public Mono<ResultEntity> requestApi(Mono<ServerRequest> requestMono) {
 
-    public AuthServiceImpl(UserAuthRepository template) {
-        this.template = template;
+        return requestMono
+                .transform(this::request)
+                .transform(this::response);
     }
 
     public Mono<UserSessionRedis> getUserSession(String sessionId) {
@@ -56,6 +67,5 @@ public class AuthServiceImpl {
                 .build();
         return userSessionRedis;
     }
-
 
 }

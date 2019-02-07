@@ -1,7 +1,5 @@
-package com.paige.service.apigateway.handlers;
+package com.paige.service.apigateway.exceptions;
 
-import com.paige.service.apigateway.exceptions.InvalidParametersException;
-import com.paige.service.apigateway.exceptions.PathNotFoundException;
 import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Mono;
 

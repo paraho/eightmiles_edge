@@ -2,6 +2,7 @@ package com.paige.service.apigateway.handlers;
 
 import com.paige.service.apigateway.apiconfig.ServiceBuilder;
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
+import com.paige.service.apigateway.exceptions.ErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -21,42 +22,64 @@ public class ServiceHandler {
     ErrorHandler errorHandler;
 
     @Bean
-    HomeHandler homeHandler() {
+    AuthHandler authHandler() {
+        return new AuthHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
 
-        return new HomeHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    @Bean
+    FeedsHandler feedsHandler() {
+        return new FeedsHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
     @Bean
     NewsHandler newsHandler() {
-
         return new NewsHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
     @Bean
     MatchHandler matchHandler() {
-
         return new MatchHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
     @Bean
-    CommunityHandler communityHandler() {
-
-        return new CommunityHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    TeamHandler teamHandler() {
+        return new TeamHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
     @Bean
     RankingHandler rankingHandler() {
-
         return new RankingHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
-    public HomeHandler getHomeHandler() {
+    @Bean
+    CommunityHandler communityHandler() {
+        return new CommunityHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
 
-        return homeHandler();
+    @Bean
+    QuizHandler quizHandler() {
+        return new QuizHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
+
+    @Bean
+    NoticeHandler noticeHandler() {
+        return new NoticeHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
+
+    @Bean
+    ChatHandler chatHandler() {
+        return new ChatHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
+
+    public AuthHandler getAuthHandler() {
+        return authHandler();
+    }
+
+    public FeedsHandler getFeedsHandler() {
+        return feedsHandler();
     }
 
     public NewsHandler getNewsHandler() {
-
         return newsHandler();
     }
 
@@ -64,12 +87,28 @@ public class ServiceHandler {
         return matchHandler();
     }
 
-    public CommunityHandler getCommunityHandler() {
-        return communityHandler();
+    public TeamHandler getTeamHandler() {
+        return teamHandler();
     }
 
     public RankingHandler getRankingHandler() {
         return rankingHandler();
+    }
+
+    public CommunityHandler getCommunityHandler() {
+        return communityHandler();
+    }
+
+    public QuizHandler getQuizHandler() {
+        return quizHandler();
+    }
+
+    public NoticeHandler getNoticeHandler() {
+        return noticeHandler();
+    }
+
+    public ChatHandler getChatHandler() {
+        return chatHandler();
     }
 
 }

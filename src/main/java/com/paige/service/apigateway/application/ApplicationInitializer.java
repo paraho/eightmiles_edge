@@ -2,15 +2,12 @@ package com.paige.service.apigateway.application;
 
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.apiconfig.ApiServiceInfo;
-import com.paige.service.apigateway.repository.Post;
 import com.paige.service.apigateway.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 
-import java.util.UUID;
 import java.util.logging.Logger;
 
 @Component
@@ -31,7 +28,7 @@ public class ApplicationInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("start data initialization  ...");
 
-        ApiServiceInfo getinfo = apiServiceConfig.getHome();
+        ApiServiceInfo getinfo = apiServiceConfig.getFeeds();
         ApiServiceInfo newsinfo = apiServiceConfig.getNews();
         logger.info("service url" + getinfo.getBaseurl());
         logger.info("service url" + newsinfo.getBaseurl());

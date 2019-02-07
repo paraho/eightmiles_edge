@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -20,103 +21,91 @@ public abstract class BaseService {
     private static final String ERROR_REMOTE_SERVICE = "error remote service";
     protected WebClient webClient;
     protected ApiServiceConfig apiServiceConfig;
+    protected String baseUrl;
 
     public BaseService(ApiServiceConfig apiServiceConfig) {
 
         this.apiServiceConfig = apiServiceConfig;
     }
 
-    protected abstract Mono<ResultEntity> fromContents(Mono<ServerRequest> requestMono);
+    public void setBaseUrl(String url) {
 
-    protected void buildHeader(ServerRequest requestMono) {
-        Map<String, String> resHeaders
-                = requestMono.exchange().getResponse().getHeaders().toSingleValueMap();
-
-        Map<String, String> reqHeaders
-                = requestMono.exchange().getRequest().getHeaders().toSingleValueMap();
-
-        webClient
-                .mutate()
-                .defaultHeaders(httpHeaders -> {
-                    httpHeaders.add("USER-ID", reqHeaders.get("USER-ID"));
-                    httpHeaders.add("USER-LEVEL",reqHeaders.get("USER-LEVEL"));
-                    httpHeaders.add("CLIENT-OS",resHeaders.get("CLIENT-OS"));
-                    httpHeaders.add("CLIENT-VER",resHeaders.get("CLIENT-VER"));
-                    httpHeaders.add("REQUEST-ID",resHeaders.get("REQUEST-ID"));
-                    httpHeaders.add("ACCESS-TOKEN",resHeaders.get("ACCESS-TOKEN"));
-                })
-                .build();
+        this.baseUrl = url;
+        webClient = WebClient.create(this.baseUrl);
     }
 
+    protected abstract Mono<ResultEntity> requestApi(Mono<ServerRequest> requestMono);
 
-    @SuppressWarnings("Duplicates")
-    protected Mono<ResultEntity> getContent(Mono<ServerRequest> requestMono) {
+    protected Mono<ResultEntity> request(Mono<ServerRequest> requestMono) {
 
         return requestMono
-                //.doOnNext(this::buildHeader)
-                .flatMap(url -> {
+                .flatMap(serverRequest -> {
+
+                    ServerHttpRequest request
+                            = serverRequest.exchange().getRequest();
+                    ServerHttpResponse response
+                            = serverRequest.exchange().getResponse();
 
                     Map<String, String> resHeaders
-                            = url.exchange().getResponse().getHeaders().toSingleValueMap();
-
+                            = response.getHeaders().toSingleValueMap();
                     Map<String, String> reqHeaders
-                            = url.exchange().getRequest().getHeaders().toSingleValueMap();
+                            = request.getHeaders().toSingleValueMap();
+                    HttpMethod method
+                            = request.getMethod();
 
-                    ServerHttpRequest request = url.exchange().getRequest();
+                    String uriInfo
+                            = serverRequest.path().replace("api/", "");
 
-                    HttpMethod method = request.getMethod();
-                    String uriInfo = url.path().replace("api/", "");
-                    String queryParam = url.exchange().getRequest().getURI().getQuery();
-                    if (url.exchange().getRequest().getURI().getQuery() != null)
-                        uriInfo = uriInfo + "?" + queryParam;
+                    if (request.getURI().getQuery() != null)
+                        uriInfo = uriInfo + "?" + request.getURI().getQuery();
 
-                    WebClient.RequestBodySpec bodySpec = this.webClient.method(method)
+                    WebClient.RequestBodySpec bodySpec = webClient.method(method)
                             .uri(uriInfo)
                             .accept(MediaType.APPLICATION_JSON)
                             .headers(httpHeaders -> {
                                 httpHeaders.addAll(request.getHeaders());
-                                httpHeaders.add("USER-ID", reqHeaders.get("USER-ID"));
-                                httpHeaders.add("USER-LEVEL",reqHeaders.get("USER-LEVEL"));
-                                httpHeaders.add("CLIENT-OS",resHeaders.get("CLIENT-OS"));
-                                httpHeaders.add("CLIENT-VER",resHeaders.get("CLIENT-VER"));
-                                httpHeaders.add("REQUEST-ID",resHeaders.get("REQUEST-ID"));
-                                httpHeaders.add("ACCESS-TOKEN",resHeaders.get("ACCESS-TOKEN"));
-                                //TODO: can this support preserviceHostHeader?
-                                //httpHeaders.remove(HttpHeaders.HOST);
+                                httpHeaders.add("USER-ID",      resHeaders.get("USER-ID")       );
+                                httpHeaders.add("USER-LEVEL",   resHeaders.get("USER-LEVEL")    );
+                                httpHeaders.add("USER-TEAM",    resHeaders.get("USER-TEAM")     );
+                                httpHeaders.add("REQUEST-ID",   resHeaders.get("REQUEST-ID")    );
+                                httpHeaders.add("ACCESS-TOKEN", resHeaders.get("ACCESS-TOKEN")  );
                             });
 
                     WebClient.RequestHeadersSpec<?> headersSpec;
-                    headersSpec = bodySpec.body(BodyInserters.fromDataBuffers(request.getBody()));
+                    if (requiresBody(method)) {
+                        headersSpec = bodySpec.body(BodyInserters.fromDataBuffers(request.getBody()));
+                    } else {
+                        headersSpec = bodySpec;
+                    }
 
                     Mono<ResultEntity> resultEntity =
                             headersSpec.exchange()
                                     .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
                     return resultEntity;
                 })
-                .onErrorResume(throwable -> Mono.error(new GetRemoteServiceException(ERROR_REMOTE_SERVICE, throwable)));
+                .doOnNext(logging -> log.debug(this.webClient.toString()))
+                .onErrorResume(throwable -> Mono.error(new GetRemoteServiceException(throwable.getMessage(), throwable)));
     }
 
 
-    protected Mono<String> buildUrl(final Mono<ServerRequest> urlMono) {
+    protected Mono<ResultEntity> response(final Mono<ResultEntity> resultEntityMono) {
 
-        return urlMono.flatMap( url -> {
-            String uriInfo = url.path().replace("api/", "");
-            String queryParam = url.exchange().getRequest().getURI().getQuery();
-            if (url.exchange().getRequest().getURI().getQuery() != null)
-                uriInfo = uriInfo + "?" + queryParam;
-
-            return Mono.just(uriInfo);
+        return resultEntityMono.flatMap( resultEntity -> {
+            if (resultEntity.getError_code() == null)
+                return Mono.error(new GetRemoteServiceException(ERROR_REMOTE_SERVICE));
+            else
+                return Mono.just(resultEntity);
         });
-
     }
 
-    protected Mono<ResultEntity> get(final Mono<String> urlMono) {
-        return urlMono.flatMap(url -> webClient
-                .get()
-                .uri(url)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class)));
+    private boolean requiresBody(HttpMethod method) {
+        switch (method) {
+            case PUT:
+            case POST:
+            case PATCH:
+                return true;
+            default:
+                return false;
+        }
     }
-
 }

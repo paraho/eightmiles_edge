@@ -1,5 +1,6 @@
-package com.paige.service.apigateway.handlers;
+package com.paige.service.apigateway.exceptions;
 
+import com.paige.service.apigateway.exceptions.GlobalErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;

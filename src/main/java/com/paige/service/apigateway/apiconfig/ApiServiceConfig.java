@@ -20,20 +20,30 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ApiServiceConfig {
 
-     ApiServiceInfo home;
+     ApiServiceInfo auth;
+     ApiServiceInfo feeds;
      ApiServiceInfo news;
      ApiServiceInfo match;
-     ApiServiceInfo rank;
+     ApiServiceInfo team;
+     ApiServiceInfo ranking;
      ApiServiceInfo community;
+     ApiServiceInfo quiz;
+     ApiServiceInfo notice;
+     ApiServiceInfo chat;
 
-     public ApiServiceInfo createServiceInfo(String serviceName) {
+     public ApiServiceInfo getServiceInfo(String serviceName) {
 
           switch (serviceName) {
-               case "home" : return this.getHome();
-               case "news" : return this.getNews();
-               case "match" : return this.getMatch();
-               case "rank" : return this.getRank();
-               case "community" : return this.getCommunity();
+               case "auth"         : return this.getAuth();
+               case "feeds"        : return this.getFeeds();
+               case "news"         : return this.getNews();
+               case "match"        : return this.getMatch();
+               case "team"         : return this.getTeam();
+               case "ranking"      : return this.getRanking();
+               case "community"    : return this.getCommunity();
+               case "quiz"         : return this.getChat();
+               case "notice"       : return this.getNotice();
+               case "chat"         : return this.getChat();
           }
           return null;
           /*

@@ -1,6 +1,6 @@
 package com.paige.service.apigateway.apiconfig;
 
-import com.paige.service.apigateway.handlers.ErrorHandler;
+import com.paige.service.apigateway.exceptions.ErrorHandler;
 import com.paige.service.apigateway.handlers.ServiceHandler;
 import com.paige.service.apigateway.routers.MainRouter;
 import org.springframework.context.annotation.Bean;

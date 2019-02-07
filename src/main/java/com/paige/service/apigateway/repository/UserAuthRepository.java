@@ -37,9 +37,9 @@ public class UserAuthRepository {
                     UserSessionRedis session = new UserSessionRedis();
                     session.setAccessToken(map.get("accessToken").toString());
                     session.setUserId(map.get("userId").toString());
-                    session.setClientVersion(map.get("clientVersion").toString());
+                    session.setClientVersion(map.get("clientVer").toString());
                     session.setTeam(map.get("team").toString());
-                    session.setOs(map.get("os").toString());
+                    session.setOs(map.get("clientOS").toString());
                     session.setUserLevel(map.get("userLevel").toString());
                     session.setExpiredTime(map.get("expiredTime").toString());
                     return Mono.just(session);

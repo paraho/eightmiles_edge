@@ -1,4 +1,4 @@
-package com.paige.service.apigateway.handlers;
+package com.paige.service.apigateway.exceptions;
 
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;

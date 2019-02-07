@@ -1,6 +1,5 @@
-package com.paige.service.apigateway.handlers;
+package com.paige.service.apigateway.exceptions;
 
-import com.paige.service.apigateway.exceptions.PathNotFoundException;
 import com.paige.service.apigateway.model.ErrorResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

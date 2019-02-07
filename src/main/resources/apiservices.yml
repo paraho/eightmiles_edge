@@ -1,31 +1,44 @@
 apiservice:
-  home:
+  # baseurl(API 서버주소): http://ipaddr:port
+  # method(get,post,put,del): /{service name}/** (URI 경로)
+  auth:
+    baseurl: http://172.20.92.214:31004
+    get: /auth/**
+    post: /auth/**
+    put: /auth/**
+    del: /auth/**
+
+  feeds:
     baseurl: http://172.20.92.215:8001
     get: /feeds/**
 
-  # baseurl(API 서버주소): http://ipaddr:port
-  # method(get,post,put,del): /{service name}/** (URI 경로)
   news:
     baseurl: http://172.20.92.214:31005
-    #baseurl: http://localhost:31005
     get: /news/**
     post: /news/**
     put: /news/**
     del: /news/**
 
   match:
-    baseurl: http://localhost:9000
+    baseurl: http://172.20.92.215:8002
     get: /match/**
     post: /match/**
     put: /match/**
     del: /match/**
 
-  rank:
-    baseurl: http://localhost:9000
-    get: /rank/**
-    post: /rank/**
-    put: /rank/**
-    del: /rank/**
+  team:
+    baseurl: http://172.20.92.215:8002
+    get: /team/**
+    post: /team/**
+    put: /team/**
+    del: /team/**
+
+  ranking:
+    baseurl: http://172.20.92.215:8002
+    get: /ranking/**
+    post: /ranking/**
+    put: /ranking/**
+    del: /ranking/**
 
   community:
     baseurl: http://172.20.92.213:31013
@@ -33,3 +46,24 @@ apiservice:
     post: /community/**
     put: /community/**
     del: /community/**
+
+  quiz:
+    baseurl: http://localhost:9000
+    get: /quiz/**
+    post: /quiz/**
+    put: /quiz/**
+    del: /quiz/**
+
+  notice:
+    baseurl: http://172.20.92.215:8017
+    get: /notice/**
+    post: /notice/**
+    put: /notice/**
+    del: /notice/**
+
+  chat:
+    baseurl: http://172.20.92.216:31014
+    get: /chat/**
+    post: /chat/**
+    put: /chat/**
+    del: /chat/**

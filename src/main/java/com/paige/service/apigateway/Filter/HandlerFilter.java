@@ -1,7 +1,7 @@
 package com.paige.service.apigateway.Filter;
 
 
-import com.paige.service.apigateway.handlers.ErrorHandler;
+import com.paige.service.apigateway.exceptions.ErrorHandler;
 import com.paige.service.apigateway.paigeservices.AuthServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
@@ -51,15 +51,15 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
 
 
 /*        if (!requestHeaders.containsKey("ACCESS-TOKEN")
-            || requestHeaders.get("ACCESS-TOKEN").isEmpty()) {
+            || requestHeaders.response("ACCESS-TOKEN").isEmpty()) {
 
             return ServerResponse.ok().body(
                     BodyInserters.fromObject(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "")));
         }
 
 
-        return this.authService.getUserSession(requestHeaders.get("ACCESS-TOKEN"))*/
-        String sessionId = "session:A7107EF1-E243-43CB-995A-D606D4FB6B9A";
+        return this.authService.getUserSession(requestHeaders.response("ACCESS-TOKEN"))*/
+        String sessionId = "session:DCD013FB-6683-4C3B-8E72-578A124A5683";
         return this.authService.getUserSession(sessionId)
                 .flatMap(
                     sessionRedis -> {
@@ -72,6 +72,7 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
                         args.add("USER-ID", sessionRedis.getUserId());
                         args.add("USER-LEVEL",sessionRedis.getUserLevel());
                         args.add("ACCESS-TOKEN", sessionRedis.getAccessToken());
+                        args.add("USER-TEAM", sessionRedis.getTeam());
 
                         request.exchange().getResponse().getHeaders().addAll(args);
 

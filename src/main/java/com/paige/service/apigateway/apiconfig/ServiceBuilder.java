@@ -14,11 +14,8 @@ public class ServiceBuilder {
 
     private final ApiServiceConfig apiServiceConfig;
 
-    private BaseService homeService;
-    private BaseService newsService;
-    private BaseService matchService;
-    private BaseService rankingService;
-    private BaseService communityService;
+    private BaseService authService;
+    private BaseService contentsService;
 
     public ServiceBuilder(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;
@@ -27,11 +24,13 @@ public class ServiceBuilder {
     @PostConstruct
     public void postConstruct() {
 
-        this.homeService = new HomeServiceImpl(apiServiceConfig);
-        this.newsService = new NewsServiceImpl(apiServiceConfig);
-        this.matchService = new MatchServiceImpl(apiServiceConfig);
-        this.rankingService = new RankingServiceImpl(apiServiceConfig);
-        this.communityService = new CommunityServiceImpl(apiServiceConfig);
+        this.authService = new AuthServiceImpl(apiServiceConfig);
+        this.contentsService = new ContentsServiceImpl(apiServiceConfig);
+    }
+
+    public BaseService createServiceInst() {
+
+        return new ContentsServiceImpl(apiServiceConfig);
     }
 
 }
