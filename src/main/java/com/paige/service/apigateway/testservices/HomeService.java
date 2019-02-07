@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@SpringBootApplication
+//@SpringBootApplication
 public class HomeService {
 
-
+/*
     @RestController
     public static class MyController {
 
@@ -150,6 +150,7 @@ public class HomeService {
         System.setProperty("SERVER.PORT","9000");
         SpringApplication.run(HomeService.class, args);
     }
+    */
 }
 
 
