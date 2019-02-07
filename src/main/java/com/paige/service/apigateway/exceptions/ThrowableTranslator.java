@@ -18,6 +18,8 @@ class ThrowableTranslator {
             return HttpStatus.BAD_REQUEST;
         } else if (error instanceof PathNotFoundException) {
             return HttpStatus.NOT_FOUND;
+        } else if (error instanceof SessionException) {
+            return HttpStatus.UNAUTHORIZED;
         } else {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }

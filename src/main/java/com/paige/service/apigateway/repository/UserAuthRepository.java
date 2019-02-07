@@ -1,6 +1,7 @@
 package com.paige.service.apigateway.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paige.service.apigateway.exceptions.SessionException;
 import com.paige.service.apigateway.model.UserSessionRedis;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class UserAuthRepository {
     private static final String ERROR_GETTING_DATA = "[redis eror] : getting user session";
     private final ReactiveRedisTemplate<String, Object> reactiveRedisTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String SESSION_KEY_PREFIX = "session:";
     private static final Long SESSION_EXPIRE_TIME = Long.valueOf(30*24*60*60);
 
     public UserAuthRepository(ReactiveRedisTemplate<String, Object> reactiveRedisTemplate) {
@@ -28,8 +30,8 @@ public class UserAuthRepository {
         return reactiveRedisTemplate.<String, UserSessionRedis>opsForHash().values("session");
     }
 
-    public Mono<UserSessionRedis> findBySessionId(String id) {
-        return reactiveRedisTemplate.<String, Object>opsForHash().entries(id)
+    public Mono<UserSessionRedis> findBySessionId(String sessionId) {
+        return reactiveRedisTemplate.<String, Object>opsForHash().entries(SESSION_KEY_PREFIX + sessionId)
                 .collectMap( entry -> entry.getKey(),
                         entry -> entry.getValue())
                 .flatMap(map -> {
@@ -43,19 +45,25 @@ public class UserAuthRepository {
                     session.setUserLevel(map.get("userLevel").toString());
                     session.setExpiredTime(map.get("expiredTime").toString());
                     return Mono.just(session);
-                });
-/*                .onErrorResume(e -> Mono.error(new NameRequiredException(
-                        HttpStatus.BAD_REQUEST,
-                        "username is required", e)));*/
-                //.onErrorResume(throwable -> Mono.error(new SessionException(SessionException.Reason.FAIL_GETDATA, "")));
+                })
+                .doOnSuccess(userSessionRedis -> this.setSessionTime(SESSION_KEY_PREFIX + userSessionRedis.getAccessToken()))
+                .onErrorResume(throwable -> Mono.error(new SessionException(SessionException.Reason.ACCESS_DENIED, "session not found")));
 
     }
 
+    public Mono<Void> setSessionTime(String sessionId) {
+
+        return reactiveRedisTemplate.expire(sessionId, Duration.ofSeconds(SESSION_EXPIRE_TIME))
+                .flatMap(aBoolean -> Mono.empty());
+    }
+
+    @Deprecated
     public Mono<String> findByField(String hashKey, String hashField) {
 
         return reactiveRedisTemplate.<String, String>opsForHash().get(hashKey, hashField);
     }
 
+    @Deprecated
     public Mono<UserSessionRedis> saveSession(UserSessionRedis userSessionRedis) {
 
         //TODO : 테스트를 위한 용도 제거되어야 할 코드!
@@ -69,12 +77,6 @@ public class UserAuthRepository {
                 .log()
                 .map(p -> userSessionRedis);
 
-    }
-
-    public Mono<Void> setSessionTime(String sessionId) {
-
-        return reactiveRedisTemplate.expire(sessionId, Duration.ofSeconds(SESSION_EXPIRE_TIME))
-        .flatMap(aBoolean -> Mono.empty());
     }
 
     @Deprecated

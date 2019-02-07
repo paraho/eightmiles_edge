@@ -1,7 +1,7 @@
 package com.paige.service.apigateway.application;
 
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
-import com.paige.service.apigateway.apiconfig.ApiServiceInfo;
+import com.paige.service.apigateway.apiconfig.ApiServiceProperty;
 import com.paige.service.apigateway.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class ApplicationInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("start data initialization  ...");
 
-        ApiServiceInfo getinfo = apiServiceConfig.getFeeds();
-        ApiServiceInfo newsinfo = apiServiceConfig.getNews();
+        ApiServiceProperty getinfo = apiServiceConfig.getFeeds();
+        ApiServiceProperty newsinfo = apiServiceConfig.getNews();
         logger.info("service url" + getinfo.getBaseurl());
         logger.info("service url" + newsinfo.getBaseurl());
 

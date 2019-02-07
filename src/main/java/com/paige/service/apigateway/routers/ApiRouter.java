@@ -37,11 +37,18 @@ public class ApiRouter {
     private static BiFunction<String,ApiServiceHandler,RouterFunction<?>> router = (config, handler) -> {
         log.info("route info = {}, {}", config, handler.toString());
         return RouterFunctions
-                .route(GET(API_PATH + apiServiceConfig.getServiceInfo(config).getGet()).and(accept(APPLICATION_JSON))
+                .route(GET(API_PATH + apiServiceConfig.getServiceInfo(config).getGet())
+                        .and(accept(APPLICATION_JSON))
                         , handler::exchange)
-                .andRoute(POST(API_PATH + apiServiceConfig.getServiceInfo(config).getPost()), handler::exchange)
-                .andRoute(PUT(API_PATH + apiServiceConfig.getServiceInfo(config).getPut()), handler::exchange)
-                .andRoute(DELETE(API_PATH + apiServiceConfig.getServiceInfo(config).getDel()), handler::exchange)
+                .andRoute(POST(API_PATH + apiServiceConfig.getServiceInfo(config).getPost())
+                        .and(accept(APPLICATION_JSON))
+                        , handler::exchange)
+                .andRoute(PUT(API_PATH + apiServiceConfig.getServiceInfo(config).getPut())
+                        .and(accept(APPLICATION_JSON))
+                        , handler::exchange)
+                .andRoute(DELETE(API_PATH + apiServiceConfig.getServiceInfo(config).getDel())
+                        .and(accept(APPLICATION_JSON))
+                        , handler::exchange)
                 .filter(handlerFilter);
     };
 
@@ -49,13 +56,14 @@ public class ApiRouter {
             , ErrorHandler errorHandler) {
 
         return RouterFunctions
-                .route(GET(API_PATH + apiServiceConfig.getServiceInfo("auth").getGet()).and(accept(APPLICATION_JSON))
+                .route(GET(API_PATH + apiServiceConfig.getServiceInfo("auth").getGet())
+                        .and(accept(APPLICATION_JSON))
                         , serviceHandler.getAuthHandler()::exchange)
-                .andRoute(POST(API_PATH + apiServiceConfig.getServiceInfo("auth").getPost()).and(accept(APPLICATION_JSON))
+                .andRoute(POST(API_PATH + apiServiceConfig.getServiceInfo("auth").getPost())
+                        .and(accept(APPLICATION_JSON))
                         , serviceHandler.getAuthHandler()::exchange)
                 .andRoute(POST(API_PATH + USER_PATH + "/**").and(accept(APPLICATION_JSON))
                         , serviceHandler.getAuthHandler()::exchange)
-                .filter(handlerFilter)
                 .andOther(router.apply("feeds", serviceHandler.getFeedsHandler()))
                 .andOther(router.apply("news", serviceHandler.getNewsHandler()))
                 .andOther(router.apply("match", serviceHandler.getMatchHandler()))

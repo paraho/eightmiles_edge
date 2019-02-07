@@ -4,6 +4,7 @@ import com.paige.service.apigateway.apiconfig.ServiceBuilder;
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.exceptions.ErrorHandler;
 import com.paige.service.apigateway.model.ResultEntity;
+import com.paige.service.apigateway.paigeservices.AuthServiceImpl;
 import com.paige.service.apigateway.paigeservices.ContentsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -17,6 +18,7 @@ public abstract class ApiServiceHandler {
     public final ServiceBuilder serviceBuilder;
     public final ErrorHandler errorHandler;
     protected ContentsServiceImpl contentService;
+    protected AuthServiceImpl authService;
 
     public ApiServiceHandler(final ApiServiceConfig apiServiceConfig,
                              final ErrorHandler errorHandler,
@@ -27,6 +29,7 @@ public abstract class ApiServiceHandler {
         this.serviceBuilder = serviceBuilder;
         //this.contentService = (ContentsServiceImpl) serviceBuilder.getContentsService();
         this.contentService = (ContentsServiceImpl) serviceBuilder.createServiceInst();
+        this.authService = (AuthServiceImpl) serviceBuilder.getAuthService();
     }
 
     //public abstract Mono<ServerResponse> exchange(final ServerRequest serverRequest);

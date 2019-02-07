@@ -2,14 +2,17 @@ package com.paige.service.apigateway.Filter;
 
 
 import com.paige.service.apigateway.exceptions.ErrorHandler;
+import com.paige.service.apigateway.model.ErrorResponse;
 import com.paige.service.apigateway.paigeservices.AuthServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerFilterFunction;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -50,16 +53,14 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
                 request.exchange().getRequest().getHeaders().toSingleValueMap();
 
 
-/*        if (!requestHeaders.containsKey("ACCESS-TOKEN")
-            || requestHeaders.response("ACCESS-TOKEN").isEmpty()) {
+        if (!requestHeaders.containsKey("ACCESS-TOKEN")
+            || requestHeaders.get("ACCESS-TOKEN").isEmpty()) {
 
             return ServerResponse.ok().body(
                     BodyInserters.fromObject(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "")));
         }
 
-
-        return this.authService.getUserSession(requestHeaders.response("ACCESS-TOKEN"))*/
-        String sessionId = "session:DCD013FB-6683-4C3B-8E72-578A124A5683";
+        String sessionId = requestHeaders.get("ACCESS-TOKEN");
         return this.authService.getUserSession(sessionId)
                 .flatMap(
                     sessionRedis -> {
@@ -76,10 +77,12 @@ public class HandlerFilter implements HandlerFilterFunction<ServerResponse, Serv
 
                         request.exchange().getResponse().getHeaders().addAll(args);
 
+                        logger.info("[session info]: {}", args.toString());
+
                         return next.handle(request);
                     }
                 )
-                .log()
+                //.log() : 디버깅시 주석제거
                 .onErrorResume(error::throwableError);
 
     }

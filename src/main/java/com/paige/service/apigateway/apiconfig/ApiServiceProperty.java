@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public class ApiServiceInfo {
+public class ApiServiceProperty {
 
     private String baseurl;
     private String get;

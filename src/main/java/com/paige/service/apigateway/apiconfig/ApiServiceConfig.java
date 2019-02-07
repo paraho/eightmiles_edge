@@ -16,22 +16,20 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "apiservice")
 @PropertySource(value = {"classpath:/apiservices.yml"}, factory = ApplicationPropertyFactory.class)
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ApiServiceConfig {
 
-     ApiServiceInfo auth;
-     ApiServiceInfo feeds;
-     ApiServiceInfo news;
-     ApiServiceInfo match;
-     ApiServiceInfo team;
-     ApiServiceInfo ranking;
-     ApiServiceInfo community;
-     ApiServiceInfo quiz;
-     ApiServiceInfo notice;
-     ApiServiceInfo chat;
+     ApiServiceProperty auth;
+     ApiServiceProperty feeds;
+     ApiServiceProperty news;
+     ApiServiceProperty match;
+     ApiServiceProperty team;
+     ApiServiceProperty ranking;
+     ApiServiceProperty community;
+     ApiServiceProperty quiz;
+     ApiServiceProperty notice;
+     ApiServiceProperty chat;
 
-     public ApiServiceInfo getServiceInfo(String serviceName) {
+     public ApiServiceProperty getServiceInfo(String serviceName) {
 
           switch (serviceName) {
                case "auth"         : return this.getAuth();
@@ -50,7 +48,7 @@ public class ApiServiceConfig {
           try {
                Class<?> cls = Class.forName(serviceName);
                Object obj = cls.newInstance();
-               return (ApiServiceInfo)obj;
+               return (ApiServiceProperty)obj;
           } catch (Exception e) {
                return null;
           }

@@ -41,20 +41,14 @@ public abstract class BaseService {
         return requestMono
                 .flatMap(serverRequest -> {
 
-                    ServerHttpRequest request
-                            = serverRequest.exchange().getRequest();
-                    ServerHttpResponse response
-                            = serverRequest.exchange().getResponse();
+                    ServerHttpRequest request   = serverRequest.exchange().getRequest();
+                    ServerHttpResponse response = serverRequest.exchange().getResponse();
 
-                    Map<String, String> resHeaders
-                            = response.getHeaders().toSingleValueMap();
-                    Map<String, String> reqHeaders
-                            = request.getHeaders().toSingleValueMap();
-                    HttpMethod method
-                            = request.getMethod();
+                    Map<String, String> resHeaders = response.getHeaders().toSingleValueMap();
+                    Map<String, String> reqHeaders = request.getHeaders().toSingleValueMap();
+                    HttpMethod method = request.getMethod();
 
-                    String uriInfo
-                            = serverRequest.path().replace("api/", "");
+                    String uriInfo = serverRequest.path().replace("api/", "");
 
                     if (request.getURI().getQuery() != null)
                         uriInfo = uriInfo + "?" + request.getURI().getQuery();
@@ -63,12 +57,18 @@ public abstract class BaseService {
                             .uri(uriInfo)
                             .accept(MediaType.APPLICATION_JSON)
                             .headers(httpHeaders -> {
+
                                 httpHeaders.addAll(request.getHeaders());
-                                httpHeaders.add("USER-ID",      resHeaders.get("USER-ID")       );
-                                httpHeaders.add("USER-LEVEL",   resHeaders.get("USER-LEVEL")    );
-                                httpHeaders.add("USER-TEAM",    resHeaders.get("USER-TEAM")     );
-                                httpHeaders.add("REQUEST-ID",   resHeaders.get("REQUEST-ID")    );
-                                httpHeaders.add("ACCESS-TOKEN", resHeaders.get("ACCESS-TOKEN")  );
+                                httpHeaders.add("REQUEST-ID",       resHeaders.get("REQUEST-ID")    );
+                                if(resHeaders.containsKey("USER-ID"))
+                                    httpHeaders.add("USER-ID",      resHeaders.get("USER-ID")       );
+                                if(resHeaders.containsKey("USER-LEVEL"))
+                                    httpHeaders.add("USER-LEVEL",   resHeaders.get("USER-LEVEL")    );
+                                if(resHeaders.containsKey("USER-TEAM"))
+                                    httpHeaders.add("USER-TEAM",    resHeaders.get("USER-TEAM")     );
+                                if(resHeaders.containsKey("ACCESS-TOKEN"))
+                                    httpHeaders.add("ACCESS-TOKEN", resHeaders.get("ACCESS-TOKEN")  );
+
                             });
 
                     WebClient.RequestHeadersSpec<?> headersSpec;
@@ -98,7 +98,7 @@ public abstract class BaseService {
         });
     }
 
-    private boolean requiresBody(HttpMethod method) {
+    protected boolean requiresBody(HttpMethod method) {
         switch (method) {
             case PUT:
             case POST:

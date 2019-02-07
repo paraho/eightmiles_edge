@@ -37,7 +37,7 @@ public class SessionException extends RuntimeException {
      */
     public enum Reason {
 
-        FAIL_GETDATA(HttpStatus.INTERNAL_SERVER_ERROR),
+        INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR),
 
         ACCESS_DENIED(HttpStatus.FORBIDDEN),
 

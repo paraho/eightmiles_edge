@@ -37,13 +37,16 @@ public class GlobalFilter implements WebFilter {
                 requestHeaders.containsKey("CLIENT-OS") == true ? requestHeaders.get("CLIENT-OS") : "");
         args.add("CLIENT-VER",
                 requestHeaders.containsKey("CLIENT-VER") == true ? requestHeaders.get("CLIENT-VER") : "");
+        args.add("DEVICE-UUID",
+                requestHeaders.containsKey("DEVICE-UUID") == true ? requestHeaders.get("DEVICE-UUID") : "");
         args.add("REQUEST-ID", Long.toString(request_uid));
 
         exchange.getResponse().getHeaders().addAll(args);
 
-        for (String key : requestHeaders.keySet()) {
-            logger.info("[Request Info] :{} = {}", key, requestHeaders.get(key));
-        }
+        //for (String key : requestHeaders.keySet()) {
+            logger.info("[Request Headers] :{}", requestHeaders.toString());
+            log.debug("[Response Headers] : {}", args.toString());
+        //}
         return chain.filter(exchange);
     }
 }
