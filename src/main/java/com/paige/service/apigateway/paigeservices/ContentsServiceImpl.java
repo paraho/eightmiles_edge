@@ -19,8 +19,8 @@ public class ContentsServiceImpl extends BaseService {
     public Mono<ResultEntity> requestApi(Mono<ServerRequest> requestMono) {
 
         return requestMono
-                .transform(this::request)
-                .transform(this::response);
+                .transform(this::request);
+                //.transform(this::response);
     }
 
 }

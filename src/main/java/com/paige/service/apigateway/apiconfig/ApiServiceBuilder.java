@@ -10,14 +10,14 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Data
 @Component
-public class ServiceBuilder {
+public class ApiServiceBuilder {
 
     private final ApiServiceConfig apiServiceConfig;
 
     private BaseService authService;
     private BaseService contentsService;
 
-    public ServiceBuilder(ApiServiceConfig apiServiceConfig) {
+    public ApiServiceBuilder(ApiServiceConfig apiServiceConfig) {
         this.apiServiceConfig = apiServiceConfig;
     }
 

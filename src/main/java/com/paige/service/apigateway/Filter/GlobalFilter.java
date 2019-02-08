@@ -32,21 +32,20 @@ public class GlobalFilter implements WebFilter {
         Map<String, String> requestHeaders =
                 exchange.getRequest().getHeaders().toSingleValueMap();
 
-        MultiValueMap<String, String> args = new LinkedMultiValueMap<>();
-        args.add("CLIENT-OS",
+        MultiValueMap<String, String> responseHeaders = new LinkedMultiValueMap<>();
+        responseHeaders.add("CLIENT-OS",
                 requestHeaders.containsKey("CLIENT-OS") == true ? requestHeaders.get("CLIENT-OS") : "");
-        args.add("CLIENT-VER",
+        responseHeaders.add("CLIENT-VER",
                 requestHeaders.containsKey("CLIENT-VER") == true ? requestHeaders.get("CLIENT-VER") : "");
-        args.add("DEVICE-UUID",
+        responseHeaders.add("DEVICE-UUID",
                 requestHeaders.containsKey("DEVICE-UUID") == true ? requestHeaders.get("DEVICE-UUID") : "");
-        args.add("REQUEST-ID", Long.toString(request_uid));
+        responseHeaders.add("REQUEST-ID", Long.toString(request_uid));
 
-        exchange.getResponse().getHeaders().addAll(args);
+        exchange.getResponse().getHeaders().addAll(responseHeaders);
 
-        //for (String key : requestHeaders.keySet()) {
-            logger.info("[Request Headers] :{}", requestHeaders.toString());
-            log.debug("[Response Headers] : {}", args.toString());
-        //}
+        logger.info("[GlobalFilter] [Request Headers] :{}", requestHeaders.toString());
+        log.debug("[GlobalFilter Response Headers] : {}", responseHeaders.toString());
+
         return chain.filter(exchange);
     }
 }

@@ -8,11 +8,11 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @Component
-public class PostRepository {
+public class TestRedisRepository {
 
     private final ReactiveRedisOperations<String, Post> template;
 
-    public PostRepository(ReactiveRedisOperations<String, Post> template) {
+    public TestRedisRepository(ReactiveRedisOperations<String, Post> template) {
         this.template = template;
     }
 

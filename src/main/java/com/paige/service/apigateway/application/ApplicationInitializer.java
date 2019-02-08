@@ -2,7 +2,7 @@ package com.paige.service.apigateway.application;
 
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.apiconfig.ApiServiceProperty;
-import com.paige.service.apigateway.repository.PostRepository;
+import com.paige.service.apigateway.repository.TestRedisRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,10 +17,10 @@ public class ApplicationInitializer implements CommandLineRunner {
     @Autowired
     ApiServiceConfig apiServiceConfig;
 
-    private final PostRepository posts;
+    private final TestRedisRepository posts;
     Logger logger = Logger.getLogger("Application");
 
-    public ApplicationInitializer(PostRepository posts) {
+    public ApplicationInitializer(TestRedisRepository posts) {
         this.posts = posts;
     }
 
@@ -33,7 +33,7 @@ public class ApplicationInitializer implements CommandLineRunner {
         logger.info("service url" + getinfo.getBaseurl());
         logger.info("service url" + newsinfo.getBaseurl());
 
-        /* Redis 접속 테스트
+        /* Redis 테스트
             this.posts
                 .deleteAll()
                 .thenMany(

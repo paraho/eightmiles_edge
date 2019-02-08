@@ -1,6 +1,6 @@
 package com.paige.service.apigateway.handlers;
 
-import com.paige.service.apigateway.apiconfig.ServiceBuilder;
+import com.paige.service.apigateway.apiconfig.ApiServiceBuilder;
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.exceptions.ErrorHandler;
 import com.paige.service.apigateway.model.ResultEntity;
@@ -15,14 +15,14 @@ import reactor.core.publisher.Mono;
 public abstract class ApiServiceHandler {
 
     public final ApiServiceConfig apiServiceConfig;
-    public final ServiceBuilder serviceBuilder;
+    public final ApiServiceBuilder serviceBuilder;
     public final ErrorHandler errorHandler;
     protected ContentsServiceImpl contentService;
     protected AuthServiceImpl authService;
 
     public ApiServiceHandler(final ApiServiceConfig apiServiceConfig,
                              final ErrorHandler errorHandler,
-                             final ServiceBuilder serviceBuilder) {
+                             final ApiServiceBuilder serviceBuilder) {
 
         this.apiServiceConfig = apiServiceConfig;
         this.errorHandler = errorHandler;

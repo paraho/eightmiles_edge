@@ -4,6 +4,8 @@ import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.exceptions.GetRemoteServiceException;
 import com.paige.service.apigateway.model.ResultEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -18,6 +20,7 @@ import java.util.Map;
 @Slf4j
 public abstract class BaseService {
 
+    public static Logger logger = LogManager.getLogger("Application");
     private static final String ERROR_REMOTE_SERVICE = "error remote service";
     protected WebClient webClient;
     protected ApiServiceConfig apiServiceConfig;
@@ -31,7 +34,8 @@ public abstract class BaseService {
     public void setBaseUrl(String url) {
 
         this.baseUrl = url;
-        webClient = WebClient.create(this.baseUrl);
+        this.webClient = WebClient.create(this.baseUrl);
+
     }
 
     protected abstract Mono<ResultEntity> requestApi(Mono<ServerRequest> requestMono);
@@ -53,23 +57,32 @@ public abstract class BaseService {
                     if (request.getURI().getQuery() != null)
                         uriInfo = uriInfo + "?" + request.getURI().getQuery();
 
-                    WebClient.RequestBodySpec bodySpec = webClient.method(method)
+                    WebClient.RequestBodySpec bodySpec = this.webClient.method(method)
                             .uri(uriInfo)
-                            .accept(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON_UTF8)
                             .headers(httpHeaders -> {
 
-                                httpHeaders.addAll(request.getHeaders());
                                 httpHeaders.add("REQUEST-ID",       resHeaders.get("REQUEST-ID")    );
+
+                                if(reqHeaders.containsKey("ACCESS-TOKEN"))
+                                    httpHeaders.add("ACCESS-TOKEN", reqHeaders.get("ACCESS-TOKEN")  );
+                                if(reqHeaders.containsKey("CLIENT-OS"))
+                                    httpHeaders.add("CLIENT-OS",    reqHeaders.get("CLIENT-OS")     );
+                                if(reqHeaders.containsKey("CLIENT-VER"))
+                                    httpHeaders.add("CLIENT-VER",   reqHeaders.get("CLIENT-VER")    );
+                                if(reqHeaders.containsKey("DEVICE-UUID"))
+                                    httpHeaders.add("DEVICE-UUID",  reqHeaders.get("DEVICE-UUID")   );
                                 if(resHeaders.containsKey("USER-ID"))
                                     httpHeaders.add("USER-ID",      resHeaders.get("USER-ID")       );
                                 if(resHeaders.containsKey("USER-LEVEL"))
                                     httpHeaders.add("USER-LEVEL",   resHeaders.get("USER-LEVEL")    );
                                 if(resHeaders.containsKey("USER-TEAM"))
                                     httpHeaders.add("USER-TEAM",    resHeaders.get("USER-TEAM")     );
-                                if(resHeaders.containsKey("ACCESS-TOKEN"))
-                                    httpHeaders.add("ACCESS-TOKEN", resHeaders.get("ACCESS-TOKEN")  );
 
+                                logger.info("[API request] [header info] : {}", httpHeaders.toSingleValueMap().toString());
                             });
+
+
 
                     WebClient.RequestHeadersSpec<?> headersSpec;
                     if (requiresBody(method)) {
@@ -83,7 +96,7 @@ public abstract class BaseService {
                                     .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
                     return resultEntity;
                 })
-                .doOnNext(logging -> log.debug(this.webClient.toString()))
+                //.doOnNext(logging -> log.debug(this.webClient.toString()))
                 .onErrorResume(throwable -> Mono.error(new GetRemoteServiceException(throwable.getMessage(), throwable)));
     }
 

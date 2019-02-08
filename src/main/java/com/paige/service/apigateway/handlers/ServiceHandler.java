@@ -1,6 +1,6 @@
 package com.paige.service.apigateway.handlers;
 
-import com.paige.service.apigateway.apiconfig.ServiceBuilder;
+import com.paige.service.apigateway.apiconfig.ApiServiceBuilder;
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.exceptions.ErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class ServiceHandler {
     ApiServiceConfig apiServiceConfig;
 
     @Autowired
-    ServiceBuilder serviceBuilder;
+    ApiServiceBuilder serviceBuilder;
 
     @Autowired
     ErrorHandler errorHandler;
