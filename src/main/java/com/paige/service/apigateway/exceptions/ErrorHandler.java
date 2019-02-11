@@ -14,7 +14,7 @@ public class ErrorHandler {
 
     public static Logger logger = LogManager.getLogger("Application");
     private static final String NOT_FOUND = "not found";
-    private static final String ERROR_RAISED = "error raised";
+    private static final String ERROR_RAISED = "[error] raised";
 
     private static BiFunction<HttpStatus,String,Mono<ServerResponse>> response =
             (status,value)-> ServerResponse.status(status).body(Mono.just(new ErrorResponse(value)),
@@ -48,7 +48,7 @@ public class ErrorHandler {
     }
 
     public Mono<ServerResponse> badRequest(Throwable error){
-        logger.error("error raised", error);
+        logger.error(ERROR_RAISED, error);
         return response.apply(HttpStatus.BAD_REQUEST, error.getMessage());
     }
 

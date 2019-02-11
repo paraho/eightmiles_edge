@@ -61,6 +61,7 @@ public abstract class BaseService {
                             .uri(uriInfo)
                             .accept(MediaType.APPLICATION_JSON_UTF8)
                             .headers(httpHeaders -> {
+                                //httpHeaders.addAll(request.getHeaders());
 
                                 httpHeaders.add("REQUEST-ID",       resHeaders.get("REQUEST-ID")    );
 
@@ -72,6 +73,7 @@ public abstract class BaseService {
                                     httpHeaders.add("CLIENT-VER",   reqHeaders.get("CLIENT-VER")    );
                                 if(reqHeaders.containsKey("DEVICE-UUID"))
                                     httpHeaders.add("DEVICE-UUID",  reqHeaders.get("DEVICE-UUID")   );
+
                                 if(resHeaders.containsKey("USER-ID"))
                                     httpHeaders.add("USER-ID",      resHeaders.get("USER-ID")       );
                                 if(resHeaders.containsKey("USER-LEVEL"))
@@ -79,10 +81,8 @@ public abstract class BaseService {
                                 if(resHeaders.containsKey("USER-TEAM"))
                                     httpHeaders.add("USER-TEAM",    resHeaders.get("USER-TEAM")     );
 
-                                logger.info("[API request] [header info] : {}", httpHeaders.toSingleValueMap().toString());
+                                logger.info("[REQ API] [Headers] : {}", httpHeaders.toSingleValueMap().toString());
                             });
-
-
 
                     WebClient.RequestHeadersSpec<?> headersSpec;
                     if (requiresBody(method)) {
@@ -96,7 +96,7 @@ public abstract class BaseService {
                                     .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
                     return resultEntity;
                 })
-                //.doOnNext(logging -> log.debug(this.webClient.toString()))
+                .doOnNext(logging -> logger.debug("[RES API] [RESULT] = {}:", this.webClient.toString()))
                 .onErrorResume(throwable -> Mono.error(new GetRemoteServiceException(throwable.getMessage(), throwable)));
     }
 

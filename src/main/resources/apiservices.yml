@@ -13,7 +13,7 @@ apiservice:
     get: /feeds/**
 
   news:
-    baseurl: http://localhost:9000
+    baseurl: ttp://172.20.92.214:31005
     get: /news/**
     post: /news/**
     put: /news/**

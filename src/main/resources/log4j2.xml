@@ -52,7 +52,7 @@
             <AppenderRef ref="ConsoleAppender" />
         </Logger>
 
-        <Logger name="Application" level="info" additivity="false">
+        <Logger name="Application" level="debug" additivity="false">
             <AppenderRef ref="ASYNC_LogApp"/>
         </Logger>
 
