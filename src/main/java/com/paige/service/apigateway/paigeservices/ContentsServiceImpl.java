@@ -3,6 +3,7 @@ package com.paige.service.apigateway.paigeservices;
 import com.paige.service.apigateway.apiconfig.ApiServiceConfig;
 import com.paige.service.apigateway.model.ResultEntity;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
@@ -16,7 +17,7 @@ public class ContentsServiceImpl extends BaseService {
 
 
     @Override
-    public Mono<ResultEntity> requestApi(Mono<ServerRequest> requestMono) {
+    public Mono<ClientResponse> requestApi(Mono<ServerRequest> requestMono) {
 
         return requestMono
                 .transform(this::request);

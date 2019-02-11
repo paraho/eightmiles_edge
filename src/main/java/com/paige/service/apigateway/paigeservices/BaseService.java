@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
@@ -38,67 +39,55 @@ public abstract class BaseService {
 
     }
 
-    protected abstract Mono<ResultEntity> requestApi(Mono<ServerRequest> requestMono);
+    protected abstract Mono<ClientResponse> requestApi(Mono<ServerRequest> requestMono);
 
-    protected Mono<ResultEntity> request(Mono<ServerRequest> requestMono) {
+    protected Mono<ClientResponse> request(Mono<ServerRequest> requestMono) {
 
-        return requestMono
-                .flatMap(serverRequest -> {
+        Mono<ClientResponse> clientResponse =  requestMono
+            .flatMap(serverRequest -> {
 
-                    ServerHttpRequest request   = serverRequest.exchange().getRequest();
-                    ServerHttpResponse response = serverRequest.exchange().getResponse();
+                ServerHttpRequest request = serverRequest.exchange().getRequest();
+                ServerHttpResponse response = serverRequest.exchange().getResponse();
 
-                    Map<String, String> resHeaders = response.getHeaders().toSingleValueMap();
-                    Map<String, String> reqHeaders = request.getHeaders().toSingleValueMap();
-                    HttpMethod method = request.getMethod();
+                Map<String, String> resHeaders = response.getHeaders().toSingleValueMap();
+                Map<String, String> reqHeaders = request.getHeaders().toSingleValueMap();
+                HttpMethod method = request.getMethod();
 
-                    String uriInfo = serverRequest.path().replace("api/", "");
+                String uriInfo = serverRequest.path().replace("api/", "");
 
-                    if (request.getURI().getQuery() != null)
-                        uriInfo = uriInfo + "?" + request.getURI().getQuery();
+                if (request.getURI().getQuery() != null)
+                    uriInfo = uriInfo + "?" + request.getURI().getQuery();
 
-                    WebClient.RequestBodySpec bodySpec = this.webClient.method(method)
-                            .uri(uriInfo)
-                            .accept(MediaType.APPLICATION_JSON_UTF8)
-                            .headers(httpHeaders -> {
-                                httpHeaders.addAll(request.getHeaders());
+                WebClient.RequestBodySpec bodySpec = this.webClient.method(method)
+                        .uri(uriInfo)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+                        .headers(httpHeaders -> {
+                            httpHeaders.addAll(request.getHeaders());
+                            httpHeaders.add("REQUEST-ID", resHeaders.get("REQUEST-ID"));
+                            if (resHeaders.containsKey("USER-ID"))
+                                httpHeaders.add("USER-ID", resHeaders.get("USER-ID"));
+                            if (resHeaders.containsKey("USER-LEVEL"))
+                                httpHeaders.add("USER-LEVEL", resHeaders.get("USER-LEVEL"));
+                            if (resHeaders.containsKey("USER-TEAM"))
+                                httpHeaders.add("USER-TEAM", resHeaders.get("USER-TEAM"));
 
-                                httpHeaders.add("REQUEST-ID",       resHeaders.get("REQUEST-ID")    );
+                            logger.info("[REQ API] [Headers] : {}", httpHeaders.toSingleValueMap().toString());
+                        });
 
-//                                if(reqHeaders.containsKey("ACCESS-TOKEN"))
-//                                    httpHeaders.add("ACCESS-TOKEN", reqHeaders.get("ACCESS-TOKEN")  );
-//                                if(reqHeaders.containsKey("CLIENT-OS"))
-//                                    httpHeaders.add("CLIENT-OS",    reqHeaders.get("CLIENT-OS")     );
-//                                if(reqHeaders.containsKey("CLIENT-VER"))
-//                                    httpHeaders.add("CLIENT-VER",   reqHeaders.get("CLIENT-VER")    );
-//                                if(reqHeaders.containsKey("DEVICE-UUID"))
-//                                    httpHeaders.add("DEVICE-UUID",  reqHeaders.get("DEVICE-UUID")   );
+                WebClient.RequestHeadersSpec<?> headersSpec;
+                if (requiresBody(method)) {
+                    headersSpec = bodySpec.body(BodyInserters.fromDataBuffers(request.getBody()));
+                } else {
+                    headersSpec = bodySpec;
+                }
 
-                                if(resHeaders.containsKey("USER-ID"))
-                                    httpHeaders.add("USER-ID",      resHeaders.get("USER-ID")       );
-                                if(resHeaders.containsKey("USER-LEVEL"))
-                                    httpHeaders.add("USER-LEVEL",   resHeaders.get("USER-LEVEL")    );
-                                if(resHeaders.containsKey("USER-TEAM"))
-                                    httpHeaders.add("USER-TEAM",    resHeaders.get("USER-TEAM")     );
+                return headersSpec.exchange();
+            })
+            .onErrorResume(throwable -> Mono.error(new GetRemoteServiceException(throwable.getMessage(), throwable)));
 
-                                logger.info("[REQ API] [Headers] : {}", httpHeaders.toSingleValueMap().toString());
-                            });
+        return clientResponse;
 
-                    WebClient.RequestHeadersSpec<?> headersSpec;
-                    if (requiresBody(method)) {
-                        headersSpec = bodySpec.body(BodyInserters.fromDataBuffers(request.getBody()));
-                    } else {
-                        headersSpec = bodySpec;
-                    }
-
-                    Mono<ResultEntity> resultEntity =
-                            headersSpec.exchange()
-                                    .flatMap(clientResponse -> clientResponse.bodyToMono(ResultEntity.class));
-                    return resultEntity;
-                })
-                .doOnNext(logging -> logger.debug("[RES API] [RESULT] = {}:", this.webClient.toString()))
-                .onErrorResume(throwable -> Mono.error(new GetRemoteServiceException(throwable.getMessage(), throwable)));
-    }
+}
 
 
     protected Mono<ResultEntity> response(final Mono<ResultEntity> resultEntityMono) {

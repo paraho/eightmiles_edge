@@ -7,6 +7,7 @@ import com.paige.service.apigateway.model.ResultEntity;
 import com.paige.service.apigateway.paigeservices.AuthServiceImpl;
 import com.paige.service.apigateway.paigeservices.ContentsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -42,13 +43,28 @@ public abstract class ApiServiceHandler {
     Mono<ServerResponse> buildContentResponse(Mono<ServerRequest> request) {
         return request
                 .transform(contentService::requestApi)
-                .transform(this::response)
+                .transform(this::clientResponse)
                 .onErrorResume(errorHandler::throwableError);
     }
 
+    @Deprecated
     public Mono<ServerResponse> response(Mono<ResultEntity> stringMono) {
         return stringMono.flatMap(serverResponse ->
                 ServerResponse.ok().body(Mono.just(serverResponse), ResultEntity.class));
+    }
+
+    public Mono<ServerResponse> clientResponse(Mono<ClientResponse> clientResponse) {
+
+        return clientResponse.flatMap( r -> {
+            Mono<ServerResponse> response = ServerResponse.status(r.statusCode())
+                    .headers(headerConsumer -> r.headers().asHttpHeaders().forEach(headerConsumer::addAll))
+                    .body(r.bodyToMono(ResultEntity.class), ResultEntity.class);
+
+            return response;
+        });
+
+
+
     }
 
 }
