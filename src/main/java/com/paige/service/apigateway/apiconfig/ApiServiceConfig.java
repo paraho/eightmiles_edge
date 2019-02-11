@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class ApiServiceConfig {
 
      ApiServiceProperty auth;
-     ApiServiceProperty feeds;
+     ApiServiceProperty feed;
      ApiServiceProperty news;
      ApiServiceProperty match;
      ApiServiceProperty team;
@@ -33,7 +33,7 @@ public class ApiServiceConfig {
 
           switch (serviceName) {
                case "auth"         : return this.getAuth();
-               case "feeds"        : return this.getFeeds();
+               case "feeds"        : return this.getFeed();
                case "news"         : return this.getNews();
                case "match"        : return this.getMatch();
                case "team"         : return this.getTeam();

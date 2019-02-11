@@ -13,6 +13,6 @@ public class FeedsHandler extends ApiServiceHandler {
                         , final ErrorHandler errorHandler) {
 
         super(serviceConfig, errorHandler, serviceBuilder);
-        this.contentService.setBaseUrl(serviceConfig.getFeeds().getBaseurl());
+        this.contentService.setBaseUrl(serviceConfig.getFeed().getBaseurl());
     }
 }

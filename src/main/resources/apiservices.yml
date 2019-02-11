@@ -8,12 +8,14 @@ apiservice:
     put: /auth/**
     del: /auth/**
 
-  feeds:
+  feed:
     baseurl: http://172.20.92.215:8001
-    get: /feeds/**
-
+    get: /feed/**
+    post: /feed/**
+    put: /feed/**
+    del: /feed/**
   news:
-    baseurl: ttp://172.20.92.214:31005
+    baseurl: http://172.20.92.214:31005
     get: /news/**
     post: /news/**
     put: /news/**

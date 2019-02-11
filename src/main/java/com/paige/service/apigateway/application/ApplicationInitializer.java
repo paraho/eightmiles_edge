@@ -28,7 +28,7 @@ public class ApplicationInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("start data initialization  ...");
 
-        ApiServiceProperty getinfo = apiServiceConfig.getFeeds();
+        ApiServiceProperty getinfo = apiServiceConfig.getFeed();
         ApiServiceProperty newsinfo = apiServiceConfig.getNews();
         logger.info("service url" + getinfo.getBaseurl());
         logger.info("service url" + newsinfo.getBaseurl());
