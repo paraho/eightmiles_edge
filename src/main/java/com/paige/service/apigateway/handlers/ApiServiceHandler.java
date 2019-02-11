@@ -7,10 +7,13 @@ import com.paige.service.apigateway.model.ResultEntity;
 import com.paige.service.apigateway.paigeservices.AuthServiceImpl;
 import com.paige.service.apigateway.paigeservices.ContentsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 @Slf4j
 public abstract class ApiServiceHandler {
@@ -28,7 +31,6 @@ public abstract class ApiServiceHandler {
         this.apiServiceConfig = apiServiceConfig;
         this.errorHandler = errorHandler;
         this.serviceBuilder = serviceBuilder;
-        //this.contentService = (ContentsServiceImpl) serviceBuilder.getContentsService();
         this.contentService = (ContentsServiceImpl) serviceBuilder.createServiceInst();
         this.authService = (AuthServiceImpl) serviceBuilder.getAuthService();
     }
@@ -56,15 +58,13 @@ public abstract class ApiServiceHandler {
     public Mono<ServerResponse> clientResponse(Mono<ClientResponse> clientResponse) {
 
         return clientResponse.flatMap( r -> {
+
             Mono<ServerResponse> response = ServerResponse.status(r.statusCode())
                     .headers(headerConsumer -> r.headers().asHttpHeaders().forEach(headerConsumer::addAll))
                     .body(r.bodyToMono(ResultEntity.class), ResultEntity.class);
 
             return response;
         });
-
-
-
     }
 
 }

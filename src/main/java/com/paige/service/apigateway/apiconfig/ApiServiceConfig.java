@@ -28,6 +28,7 @@ public class ApiServiceConfig {
      ApiServiceProperty quiz;
      ApiServiceProperty notice;
      ApiServiceProperty chat;
+     ApiServiceProperty users;
 
      public ApiServiceProperty getServiceInfo(String serviceName) {
 
@@ -42,6 +43,7 @@ public class ApiServiceConfig {
                case "quiz"         : return this.getChat();
                case "notice"       : return this.getNotice();
                case "chat"         : return this.getChat();
+               case "users"         : return this.getUsers();
           }
           return null;
           /*

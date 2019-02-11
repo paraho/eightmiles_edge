@@ -69,3 +69,10 @@ apiservice:
     post: /chat/**
     put: /chat/**
     del: /chat/**
+
+  users:
+    baseurl: http://172.20.92.214:31004
+    get: /users/**
+    post: /users/**
+    put: /users/**
+    del: /users/**

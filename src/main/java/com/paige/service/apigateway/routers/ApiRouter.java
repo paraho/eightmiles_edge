@@ -73,6 +73,7 @@ public class ApiRouter {
                 .andOther(router.apply("quiz", serviceHandler.getQuizHandler()))
                 .andOther(router.apply("notice", serviceHandler.getNoticeHandler()))
                 .andOther(router.apply("chat", serviceHandler.getChatHandler()))
+                .andOther(router.apply("users", serviceHandler.getUsersHandler()))
                 .andOther(route(RequestPredicates.all(), errorHandler::notFound));
     }
 }

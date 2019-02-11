@@ -71,6 +71,11 @@ public class ServiceHandler {
         return new ChatHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
+    @Bean
+    UsersHandler usersHandler() {
+        return new UsersHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
+
     public AuthHandler getAuthHandler() {
         return authHandler();
     }
@@ -107,8 +112,8 @@ public class ServiceHandler {
         return noticeHandler();
     }
 
-    public ChatHandler getChatHandler() {
-        return chatHandler();
-    }
+    public ChatHandler getChatHandler() { return chatHandler(); }
+
+    public UsersHandler getUsersHandler() { return usersHandler(); }
 
 }
