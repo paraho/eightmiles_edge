@@ -61,18 +61,18 @@ public abstract class BaseService {
                             .uri(uriInfo)
                             .accept(MediaType.APPLICATION_JSON_UTF8)
                             .headers(httpHeaders -> {
-                                //httpHeaders.addAll(request.getHeaders());
+                                httpHeaders.addAll(request.getHeaders());
 
                                 httpHeaders.add("REQUEST-ID",       resHeaders.get("REQUEST-ID")    );
 
-                                if(reqHeaders.containsKey("ACCESS-TOKEN"))
-                                    httpHeaders.add("ACCESS-TOKEN", reqHeaders.get("ACCESS-TOKEN")  );
-                                if(reqHeaders.containsKey("CLIENT-OS"))
-                                    httpHeaders.add("CLIENT-OS",    reqHeaders.get("CLIENT-OS")     );
-                                if(reqHeaders.containsKey("CLIENT-VER"))
-                                    httpHeaders.add("CLIENT-VER",   reqHeaders.get("CLIENT-VER")    );
-                                if(reqHeaders.containsKey("DEVICE-UUID"))
-                                    httpHeaders.add("DEVICE-UUID",  reqHeaders.get("DEVICE-UUID")   );
+//                                if(reqHeaders.containsKey("ACCESS-TOKEN"))
+//                                    httpHeaders.add("ACCESS-TOKEN", reqHeaders.get("ACCESS-TOKEN")  );
+//                                if(reqHeaders.containsKey("CLIENT-OS"))
+//                                    httpHeaders.add("CLIENT-OS",    reqHeaders.get("CLIENT-OS")     );
+//                                if(reqHeaders.containsKey("CLIENT-VER"))
+//                                    httpHeaders.add("CLIENT-VER",   reqHeaders.get("CLIENT-VER")    );
+//                                if(reqHeaders.containsKey("DEVICE-UUID"))
+//                                    httpHeaders.add("DEVICE-UUID",  reqHeaders.get("DEVICE-UUID")   );
 
                                 if(resHeaders.containsKey("USER-ID"))
                                     httpHeaders.add("USER-ID",      resHeaders.get("USER-ID")       );
