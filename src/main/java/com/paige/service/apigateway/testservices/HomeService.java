@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@SpringBootApplication
+//@SpringBootApplication
 public class HomeService {
-
+/*
     @ControllerAdvice
     @RestController
     public class GlobalExceptionHandler {
@@ -161,7 +161,7 @@ public class HomeService {
         System.setProperty("SERVER.PORT","9000");
         SpringApplication.run(HomeService.class, args);
     }
-
+*/
 }
 
 
