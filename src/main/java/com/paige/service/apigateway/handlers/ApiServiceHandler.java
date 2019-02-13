@@ -57,6 +57,7 @@ public abstract class ApiServiceHandler {
 
     public Mono<ServerResponse> clientResponse(Mono<ClientResponse> clientResponse) {
 
+        //TODO : 헤더정보 제거 되어야 함!!!!
         return clientResponse.flatMap( r -> {
 
             Mono<ServerResponse> response = ServerResponse.status(r.statusCode())

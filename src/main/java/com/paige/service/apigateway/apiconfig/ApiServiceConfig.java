@@ -1,9 +1,7 @@
 package com.paige.service.apigateway.apiconfig;
 
 import com.paige.service.apigateway.application.ApplicationPropertyFactory;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,7 +26,7 @@ public class ApiServiceConfig {
      ApiServiceProperty quiz;
      ApiServiceProperty notice;
      ApiServiceProperty chat;
-     ApiServiceProperty users;
+     ApiServiceProperty user;
 
      public ApiServiceProperty getServiceInfo(String serviceName) {
 
@@ -43,7 +41,7 @@ public class ApiServiceConfig {
                case "quiz"         : return this.getChat();
                case "notice"       : return this.getNotice();
                case "chat"         : return this.getChat();
-               case "users"         : return this.getUsers();
+               case "user"         : return this.getUser();
           }
           return null;
           /*
