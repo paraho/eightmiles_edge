@@ -72,6 +72,7 @@ public class ApiRouter {
                 .andOther(router.apply("notice", serviceHandler.getNoticeHandler()))
                 .andOther(router.apply("chat", serviceHandler.getChatHandler()))
                 .andOther(router.apply("user", serviceHandler.getUsersHandler()))
+                .andOther(router.apply("culog", serviceHandler.getCulogHandler()))
                 .andOther(route(RequestPredicates.all(), errorHandler::notFound));
     }
 }

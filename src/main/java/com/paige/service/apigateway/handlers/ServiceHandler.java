@@ -76,6 +76,12 @@ public class ServiceHandler {
         return new UsersHandler(apiServiceConfig, serviceBuilder, errorHandler);
     }
 
+    @Bean
+    CulogHandler culogHandler() {
+        return new CulogHandler(apiServiceConfig, serviceBuilder, errorHandler);
+    }
+
+
     public AuthHandler getAuthHandler() {
         return authHandler();
     }
@@ -115,5 +121,8 @@ public class ServiceHandler {
     public ChatHandler getChatHandler() { return chatHandler(); }
 
     public UsersHandler getUsersHandler() { return usersHandler(); }
+
+    public CulogHandler getCulogHandler() { return culogHandler(); }
+
 
 }

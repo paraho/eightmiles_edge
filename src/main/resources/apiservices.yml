@@ -76,3 +76,10 @@ apiservice:
     post: /user/**
     put: /user/**
     del: /user/**
+
+  culog:
+    baseurl: http://172.20.92.215:8672
+    get: /culog/**
+    post: /culog/**
+    put: /culog/**
+    del: /culog/**
