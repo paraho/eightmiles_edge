@@ -38,7 +38,7 @@ public class ApiServiceConfig {
                case "team"         : return this.getTeam();
                case "ranking"      : return this.getRanking();
                case "community"    : return this.getCommunity();
-               case "quiz"         : return this.getChat();
+               case "quiz"         : return this.getQuiz();
                case "notice"       : return this.getNotice();
                case "chat"         : return this.getChat();
                case "user"         : return this.getUser();

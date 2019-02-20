@@ -7,12 +7,11 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 
 public class MainRouter {
 
-    public static RouterFunction<?> bindToHandler(final ApiServiceConfig apiServiceConfig
-            , final ServiceHandler serviceHandler
+    public static RouterFunction<?> bindToHandler(final ServiceHandler serviceHandler
             , final ErrorHandler errorHandler) {
 
         return ApiRouter
-                .bindToHandler(apiServiceConfig, serviceHandler, errorHandler);
+                .bindToHandler(serviceHandler, errorHandler);
     }
 
 }

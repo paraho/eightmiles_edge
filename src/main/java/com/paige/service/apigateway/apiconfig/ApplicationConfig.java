@@ -27,11 +27,10 @@ public class ApplicationConfig {
     }
 
     @Bean
-    RouterFunction<?> mainRouterFunction(final ApiServiceConfig apiServiceConfig
-            , final ErrorHandler errorHandler
+    RouterFunction<?> mainRouterFunction(final ErrorHandler errorHandler
             , final ServiceHandler serviceHandler) {
 
-        return MainRouter.bindToHandler(apiServiceConfig, serviceHandler, errorHandler);
+        return MainRouter.bindToHandler(serviceHandler, errorHandler);
     }
 
 

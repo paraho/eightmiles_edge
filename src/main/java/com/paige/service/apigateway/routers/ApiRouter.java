@@ -22,38 +22,36 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class ApiRouter {
 
     private static ApiServiceConfig apiServiceConfig;
-    private static ErrorHandler errorHandler;
     private static HandlerFilter handlerFilter;
     private static final String API_PATH = "/api";
     private static final String USER_PATH = "/signup";
 
-    public ApiRouter(ApiServiceConfig apiServiceConfig, ErrorHandler errorHandler, HandlerFilter handlerFilter) {
+    public ApiRouter(ApiServiceConfig apiServiceConfig, HandlerFilter handlerFilter) {
         this.apiServiceConfig = apiServiceConfig;
-        this.errorHandler = errorHandler;
         this.handlerFilter = handlerFilter;
     }
 
 
-    private static BiFunction<String,ApiServiceHandler,RouterFunction<?>> router = (config, handler) -> {
-        log.info("route info = {}, {}", config, handler.toString());
+    private static BiFunction<String,ApiServiceHandler,RouterFunction<?>> router = (serviceName, handler) -> {
+        log.info("route info = {}, {}", serviceName, handler.toString());
         return RouterFunctions
-                .route(GET(API_PATH + apiServiceConfig.getServiceInfo(config).getGet())
+                .route(GET(API_PATH + apiServiceConfig.getServiceInfo(serviceName).getGet())
                         .and(accept(APPLICATION_JSON))
                         , handler::exchange)
-                .andRoute(POST(API_PATH + apiServiceConfig.getServiceInfo(config).getPost())
+                .andRoute(POST(API_PATH + apiServiceConfig.getServiceInfo(serviceName).getPost())
                         .and(accept(APPLICATION_JSON))
                         , handler::exchange)
-                .andRoute(PUT(API_PATH + apiServiceConfig.getServiceInfo(config).getPut())
+                .andRoute(PUT(API_PATH + apiServiceConfig.getServiceInfo(serviceName).getPut())
                         .and(accept(APPLICATION_JSON))
                         , handler::exchange)
-                .andRoute(DELETE(API_PATH + apiServiceConfig.getServiceInfo(config).getDel())
+                .andRoute(DELETE(API_PATH + apiServiceConfig.getServiceInfo(serviceName).getDel())
                         .and(accept(APPLICATION_JSON))
                         , handler::exchange)
                 .filter(handlerFilter);
     };
 
-    public static RouterFunction<?> bindToHandler(ApiServiceConfig apiServiceConfig, ServiceHandler serviceHandler
-            , ErrorHandler errorHandler) {
+    public static RouterFunction<?> bindToHandler(final ServiceHandler serviceHandler
+            , final ErrorHandler errorHandler) {
 
         return RouterFunctions
                 .route(GET(API_PATH + apiServiceConfig.getServiceInfo("auth").getGet())

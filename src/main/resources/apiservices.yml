@@ -50,7 +50,7 @@ apiservice:
     del: /community/**
 
   quiz:
-    baseurl: http://localhost:9000
+    baseurl: http://172.20.92.215:8017
     get: /quiz/**
     post: /quiz/**
     put: /quiz/**

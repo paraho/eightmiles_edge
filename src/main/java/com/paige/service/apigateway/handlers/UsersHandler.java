@@ -13,7 +13,7 @@ public class UsersHandler extends ApiServiceHandler{
                         , final ErrorHandler errorHandler) {
 
         super(serviceConfig, errorHandler, serviceBuilder);
-        this.contentService.setBaseUrl(serviceConfig.getAuth().getBaseurl());
+        this.contentService.setBaseUrl(serviceConfig.getUser().getBaseurl());
     }
 
 }
