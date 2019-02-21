@@ -8,7 +8,7 @@ import lombok.Data;
 public class ResultEntity {
 
     @JsonCreator
-    public ResultEntity(@JsonProperty("error_code") String error_code
+    public ResultEntity(@JsonProperty("error_code") Integer error_code
             , @JsonProperty("error_msg") String error_msg
             , @JsonProperty("result") Object result) {
         this.error_code = error_code;
@@ -17,7 +17,7 @@ public class ResultEntity {
 
     }
 
-    String error_code;
+    Integer error_code;
     String error_msg;
     Object result;
 }
