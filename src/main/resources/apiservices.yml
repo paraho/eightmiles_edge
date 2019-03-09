@@ -2,84 +2,40 @@ apiservice:
   # baseurl(API 서버주소): http://ipaddr:port
   # method(get,post,put,del): /{service name}/** (URI 경로)
   auth:
-    baseurl: http://172.20.92.214:31004
+    baseurl: http://localhost:31004
     get: /auth/**
     post: /auth/**
     put: /auth/**
     del: /auth/**
 
-  feed:
-    baseurl: http://172.20.92.215:8001
+  buy:
+    baseurl: http://localhost:9801
     get: /feed/**
     post: /feed/**
     put: /feed/**
     del: /feed/**
-  news:
-    baseurl: http://172.20.92.214:31005
+
+  sell:
+    baseurl: http://localhost:31005
     get: /news/**
     post: /news/**
     put: /news/**
     del: /news/**
 
-  match:
-    baseurl: http://172.20.92.215:8002
-    get: /match/**
-    post: /match/**
-    put: /match/**
-    del: /match/**
-
-  team:
-    baseurl: http://172.20.92.215:8002
+  wallet:
+    baseurl: http://localhost:9701
     get: /team/**
     post: /team/**
     put: /team/**
     del: /team/**
 
-  ranking:
-    baseurl: http://172.20.92.215:8002
+  inq:
+    baseurl: http://localhost:9901
     get: /ranking/**
     post: /ranking/**
     put: /ranking/**
     del: /ranking/**
 
-  community:
-    baseurl: http://172.20.92.213:31013
-    get: /community/**
-    post: /community/**
-    put: /community/**
-    del: /community/**
 
-  quiz:
-    baseurl: http://172.20.92.215:8017
-    get: /quiz/**
-    post: /quiz/**
-    put: /quiz/**
-    del: /quiz/**
 
-  notice:
-    baseurl: http://172.20.92.215:8017
-    get: /notice/**
-    post: /notice/**
-    put: /notice/**
-    del: /notice/**
 
-  chat:
-    baseurl: http://172.20.92.216:31014
-    get: /chat/**
-    post: /chat/**
-    put: /chat/**
-    del: /chat/**
-
-  user:
-    baseurl: http://172.20.92.214:31004
-    get: /user/**
-    post: /user/**
-    put: /user/**
-    del: /user/**
-
-  culog:
-    baseurl: http://172.20.92.215:8672
-    get: /culog/**
-    post: /culog/**
-    put: /culog/**
-    del: /culog/**
